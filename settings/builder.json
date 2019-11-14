@@ -25,7 +25,7 @@
   "zipCompressJs": true,
   "fb-instant-games": {},
   "android": {
-    "packageName": "org.cocos2d.helloworld"
+    "packageName": "com.youhoo.cfmajiang"
   },
   "ios": {
     "packageName": "org.cocos2d.helloworld"
