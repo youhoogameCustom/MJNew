@@ -210,12 +210,12 @@ export default class RoomPlayer extends cc.Component implements IRoomPlayer {
     startChatVoice()
     {
         this.mVoiceChat.node.parent.active = true ;
-        this.mVoiceChat.playAnimation(null,-1) ;
+        this.mVoiceChat.playAnimation("shengyinjieshou",0) ;
     }
 
     stopChatVoice()
     {
-        this.mVoiceChat.playAnimation(null,1) ;
+        this.mVoiceChat.playAnimation("shengyinjieshou",1) ;
         this.mVoiceChat.node.parent.active = false ;
     }
 

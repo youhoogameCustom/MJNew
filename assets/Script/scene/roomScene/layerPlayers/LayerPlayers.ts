@@ -121,14 +121,25 @@ export default class LayerPlayers extends cc.Component implements ILayerPlayers 
             break ;
             case eChatMsgType.eChatMsg_Voice:
             {
-                let v = this.mData.getPlayersData();
-                if ( v.length > playerIdx && v[playerIdx] != null && v[playerIdx].isEmpty() == false )
+                if ( CC_JSB )
                 {
-                    VoiceManager.getInstance().playVoice(strContent,v[playerIdx].uid ) ; 
+                    let v = this.mData.getPlayersData();
+                    if ( v.length > playerIdx && v[playerIdx] != null && v[playerIdx].isEmpty() == false )
+                    {
+                        VoiceManager.getInstance().playVoice(strContent,v[playerIdx].uid ) ; 
+                    }
+                    else
+                    {
+                        console.log( "player is null can not send voice = " + playerIdx );
+                    }
                 }
                 else
                 {
-                    console.log( "player is null can not send voice = " + playerIdx );
+                    this.mPlayers[clientIdx].startChatVoice();
+                    let p = this.mPlayers[clientIdx] ;
+                    setTimeout(() => {
+                        p.stopChatVoice();
+                    }, 3000);
                 }
                 //this.mPlayers[clientIdx].;
             }
