@@ -19,8 +19,6 @@ function sdkSendEvent( eventID  , detail )
 
 function sendRequestToPlatform( eventID , jsDetail )
 {
-    cc.warn( "暂时跳过平台调用" );
-    return ;
     if ( false == cc.sys.isNative )
     {
         cc.warn( "only navtive platform can use this function" );

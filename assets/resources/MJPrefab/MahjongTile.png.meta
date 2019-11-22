@@ -1,6 +1,6 @@
 {
   "ver": "2.3.3",
-  "uuid": "f9cfced1-a888-47db-9c1c-a7b17b2ab181",
+  "uuid": "985a717e-8b02-44ee-b42d-1341a0f9c7f0",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -11,8 +11,8 @@
   "subMetas": {
     "MahjongTile": {
       "ver": "1.0.4",
-      "uuid": "a6359fa0-9ff7-4172-8270-2e4017f5b4f4",
-      "rawTextureUuid": "f9cfced1-a888-47db-9c1c-a7b17b2ab181",
+      "uuid": "43421907-09df-4630-87aa-626aed3afa99",
+      "rawTextureUuid": "985a717e-8b02-44ee-b42d-1341a0f9c7f0",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

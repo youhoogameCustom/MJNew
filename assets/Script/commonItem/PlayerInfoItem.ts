@@ -107,6 +107,7 @@ export default class PlayerInfoItem extends cc.Component {
         this.pMaleIcon.active = info.gender == eGender.eGender_Male ;
         this.pFemaleIcon.active = !this.pMaleIcon.active ;
 
+        //console.log("this.pPhotoSprite.node " + this.pPhotoSprite.node.getParent().active );
         if ( this.pPhotoSprite.node.getParent().active )
         {
             this.setHeadUrl(info.headUrl) ;
@@ -115,7 +116,7 @@ export default class PlayerInfoItem extends cc.Component {
 
     clear()
     {
-        //cc.error( "not implete" );
+        //console.error( "not implete" );
         this.pName.string = "" ;
         this.setHeadUrl("") ;
         this.pID.string = "" ;
@@ -123,6 +124,7 @@ export default class PlayerInfoItem extends cc.Component {
 
     protected setHeadUrl( strUrl : string )
     {
+        //console.log("setHeadUrl img = " + this.imgUrl );
         if ( this.imgUrl == strUrl )
         {
             cc.warn( "same imgUrl , do not set again" );
@@ -155,6 +157,7 @@ export default class PlayerInfoItem extends cc.Component {
     private doLoadNetImg()
     {
         //this.pPhotoSprite.node.active = false ;
+        console.log("start load img = " + this.imgUrl );
         let self = this ;
         cc.loader.load({url: self.imgUrl, type: 'png'}, function (err, texture) {
             // Use texture to create sprite frame
@@ -183,7 +186,7 @@ export default class PlayerInfoItem extends cc.Component {
             let t = self.pPhotoSprite.node.getContentSize();
             self.pPhotoSprite.spriteFrame = new cc.SpriteFrame(texture);
             self.pPhotoSprite.node.setContentSize(t);
-            cc.log("ok load img headphoto");
+            console.log("ok load img headphoto");
             //elf.pPhotoSprite.node.active = true ;
         });
     }

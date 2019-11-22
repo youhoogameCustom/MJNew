@@ -82,19 +82,22 @@ export default class DlgVoice extends cc.Component {
 
     protected startRecorder()
     {
-        if ( eRecordState.eState_Idle != this.mState )
+        if ( CC_JSB )
         {
-            Prompt.promptText( "上一条语音消息没有处理完毕，请稍后再试 code =" + this.mState );
-            return ;
-        }
-
-        
-        let ret = VoiceManager.getInstance().startRecord("self");
-        if ( ret == false )
-        {
-            Prompt.promptText( "开始录音失败" );
-            this.mState = eRecordState.eState_Idle ;
-            return ;
+            if ( eRecordState.eState_Idle != this.mState )
+            {
+                Prompt.promptText( "上一条语音消息没有处理完毕，请稍后再试 code =" + this.mState );
+                return ;
+            }
+    
+            
+            let ret = VoiceManager.getInstance().startRecord("self");
+            if ( ret == false )
+            {
+                Prompt.promptText( "开始录音失败" );
+                this.mState = eRecordState.eState_Idle ;
+                return ;
+            }
         }
 
         this.mState = eRecordState.eState_Recording ;
@@ -122,6 +125,12 @@ export default class DlgVoice extends cc.Component {
 
     protected finishRecorder( isCanncel : boolean , isTimeOut : boolean )
     {
+        this.mDlgDisplayNode.active = false ;
+        if ( false == CC_JSB )
+        {
+            return ;
+        }
+        
         let ret = VoiceManager.getInstance().stopRecord( isCanncel == false , 15000 ) ; // max wait 19 seconds ;
         if ( ret && !isCanncel )
         {
@@ -146,8 +155,6 @@ export default class DlgVoice extends cc.Component {
         }
 
         this.mState = eRecordState.eState_Idle ;
-
-        this.mDlgDisplayNode.active = false ;
     }
 
     protected onUpdateRecordFileOk( event : cc.Event.EventCustom )

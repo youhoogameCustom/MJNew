@@ -17,6 +17,7 @@ import LayerPlayerCards from "./layerCards/LayerPlayerCards";
 import LayerPlayers from "./layerPlayers/LayerPlayers";
 import LayerDlg from "./layerDlg/LayerDlg";
 import LayerRoomInfo from "./layerRoomInfo/LayerRoomInfo";
+import VoiceManager from "../../sdk/VoiceManager";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,8 +61,6 @@ export default class MJRoomScene extends cc.Component implements IRoomDataDelega
 
     onLoad () 
     {
-        return ;
-        // request info ;
         let self = this ;
         let roomID = ClientApp.getInstance().getClientPlayerData().getBaseData().stayInRoomID;
         cc.systemEvent.once( MJFactory.EVENT_FINISH_LOAD_CARD,()=>{ self.mRoomData.reqRoomInfo( roomID ) ;} ) ;
@@ -97,6 +96,10 @@ export default class MJRoomScene extends cc.Component implements IRoomDataDelega
         this.mLayerRoomInfo.refresh( this.mData );
         this.mLayerCards.refresh( this.mData );
         this.mLayerDlg.refresh(this.mData) ;
+        if ( false == this.mData.getLayerCardsData().isReplay() )
+        {
+            VoiceManager.getInstance().init( ClientApp.getInstance().getClientPlayerData().getSelfUID()+"") ;
+        }
     }
 
     onMJActError() : void

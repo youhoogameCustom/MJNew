@@ -60,7 +60,7 @@ export default class LayerPlayerCards extends cc.Component implements ILayerCard
     }
 
     start () {
-        this.mData = new LayerCardsData(); // just for test ;
+        //this.mData = new LayerCardsData(); // just for test ;
         if ( this.isLoadedMJRes )
         {
            this.localRefresh( this.mData );

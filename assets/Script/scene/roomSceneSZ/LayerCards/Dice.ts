@@ -31,7 +31,7 @@ export default class Dice extends cc.Component {
     vPathPoint : cc.Vec2[] = [] ;
 
     onLoad()
-    {
+    {  
         this.vPathPoint.length = 0 ;
         for ( let n of this.mAniPath )
         {

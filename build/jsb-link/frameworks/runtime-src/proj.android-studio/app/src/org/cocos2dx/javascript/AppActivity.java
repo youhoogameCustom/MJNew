@@ -32,8 +32,12 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.content.res.Configuration;
 
-public class AppActivity extends Cocos2dxActivity {
+import com.youhoo.cfmajiang.GPSManager;
+import com.youhoo.cfmajiang.GvoiceManager;
+import com.youhoo.cfmajiang.WechatManager;
 
+public class AppActivity extends Cocos2dxActivity {
+    public  static  Cocos2dxActivity g_AppActivity = null ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +49,16 @@ public class AppActivity extends Cocos2dxActivity {
             // Don't need to finish it again since it's finished in super.onCreate .
             return;
         }
+
+        if ( g_AppActivity == null )
+        {
+            g_AppActivity = this ;
+        }
         // DO OTHER INITIALIZATION BELOW
         SDKWrapper.getInstance().init(this);
-
+        GvoiceManager.getInstance().bindActivity(this);
+        GPSManager.getInstance().bindActivity(this) ;
+        WechatManager.getInstance().bindActivity(this) ;
     }
     
     @Override
@@ -64,14 +75,20 @@ public class AppActivity extends Cocos2dxActivity {
     protected void onResume() {
         super.onResume();
         SDKWrapper.getInstance().onResume();
-
+        if ( GvoiceManager.getInstance().isEngineInit() )
+        {
+            GvoiceManager.getInstance().getVoiceEngine().Resume();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         SDKWrapper.getInstance().onPause();
-
+        if ( GvoiceManager.getInstance().isEngineInit() )
+        {
+            GvoiceManager.getInstance().getVoiceEngine().Pause();
+        }
     }
 
     @Override

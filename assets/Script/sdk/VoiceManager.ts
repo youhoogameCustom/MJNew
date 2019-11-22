@@ -64,7 +64,7 @@ export default class VoiceManager extends cc.Component {
     static EVENT_DOWNLOADED : string  = "VOICE_EVENT_DOWNLOADED" ; // { code : 2 , fileName : "" }
 
     static EVENT_QUEUE_START_PLAY : string = "EVENT_QUEUE_START_PLAY" ; // { uid : 1 }
-    static EVENT_QUEUE_PLAY_FINISH : string = "EVENT_QUEUE_START_PLAY" ; // { uid : 1 }
+    static EVENT_QUEUE_PLAY_FINISH : string = "EVENT_QUEUE_PLAY_FINISH" ; // { uid : 1 }
 
     static SDK_VOICE_INIT : string = "SDK_VOICE_INIT" ; // { appID : "adf", appKey : "adf", playerTag : "uid" }
     static SDK_VOICE_RECORD : string = "SDK_VOICE_RECORD"; // { fullPathFile : "c://music/r.mp3" }
@@ -219,6 +219,7 @@ export default class VoiceManager extends cc.Component {
             Utility.showPromptText( "下载录音错误code " + nRet );
             return false;
         }
+        console.log( "发送下载语音请求" );
         return true ;
     }
 
@@ -228,7 +229,7 @@ export default class VoiceManager extends cc.Component {
         if ( GCloudVoiceCompleteCode.GV_ON_DOWNLOAD_RECORD_DONE == code && this.doPlayFile(downloaded) )
         {
             
-
+            console.log( "下载语音成功" );
         }
         else
         {
@@ -266,6 +267,7 @@ export default class VoiceManager extends cc.Component {
         vi.fileID = fileName ;
         vi.playerUID = playerUID ;
         this.mDownloadVoiceList.push( vi );
+        console.log( "准备播放语音" );
         if ( this.mDownloadVoiceList.length == 1 )
         {
             if ( this.downloadFile(vi.fileID) == false )

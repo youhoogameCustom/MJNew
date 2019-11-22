@@ -68,6 +68,7 @@ export default class LayerPlayers extends cc.Component implements ILayerPlayers 
                     return ;
                 }
             
+                console.log( "收到播放时间 + " + eventID );
                 if ( eventID == VoiceManager.EVENT_QUEUE_START_PLAY )
                 {
                     this.mPlayers[clientIdx].startChatVoice();
@@ -76,7 +77,7 @@ export default class LayerPlayers extends cc.Component implements ILayerPlayers 
                 {
                     this.mPlayers[clientIdx].stopChatVoice();
                 }
-                
+                break;
             }
             default:
             console.error( "unknown event voice = " + eventID );
@@ -120,7 +121,16 @@ export default class LayerPlayers extends cc.Component implements ILayerPlayers 
             break ;
             case eChatMsgType.eChatMsg_Voice:
             {
-
+                let v = this.mData.getPlayersData();
+                if ( v.length > playerIdx && v[playerIdx] != null && v[playerIdx].isEmpty() == false )
+                {
+                    VoiceManager.getInstance().playVoice(strContent,v[playerIdx].uid ) ; 
+                }
+                else
+                {
+                    console.log( "player is null can not send voice = " + playerIdx );
+                }
+                //this.mPlayers[clientIdx].;
             }
             break ;
             default:
