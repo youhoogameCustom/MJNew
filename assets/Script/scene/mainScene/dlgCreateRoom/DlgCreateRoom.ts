@@ -3,6 +3,7 @@ import LayerOptsDanDong from "./LayerOptsDanDong";
 import { ILayerOpts } from "./ILayerOpts";
 import LayerOptsSuZhou from "./LayerOptsSuZhou";
 import LayerOptsSuZhouBaiDa from "./LayerOptsSuZhouBaiDa";
+import LayerOptsNanJing from "./LayerOptsNanJing";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -51,6 +52,13 @@ export default class DlgCreateRoom extends DlgBase {
     @property(LayerOptsSuZhouBaiDa)
     mLayerOptsSuZhouBaiDa : LayerOptsSuZhouBaiDa = null ;
 
+    // nan jing 
+    @property(cc.Toggle)
+    mToggleNanJing : cc.Toggle = null;
+
+    @property(LayerOptsNanJing)
+    mLayerOptsNanJing : LayerOptsNanJing = null ;
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad ()
@@ -60,6 +68,7 @@ export default class DlgCreateRoom extends DlgBase {
         this.vTogglePairs.push({ toggle : this.mToggleDanDong, layerOpts : this.mLayerOptsDanDong });
         this.vTogglePairs.push({ toggle : this.mToggleSuZhou, layerOpts : this.mLayerOptsSuZhou }) ;
         this.vTogglePairs.push({ toggle : this.mToggleSuZhouBaiDa, layerOpts : this.mLayerOptsSuZhouBaiDa }) ;
+        this.vTogglePairs.push({ toggle : this.mToggleNanJing, layerOpts : this.mLayerOptsNanJing }) ;
         // init state;
         this.onSelectGame();
     }

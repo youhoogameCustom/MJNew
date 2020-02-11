@@ -9,7 +9,6 @@ import ILayerCardsData, { IPlayerCardData } from "./ILayerCardsData";
 import IRoomSceneData from "../IRoomSceneData";
 import MJFactory from "./cards3D/MJFactory";
 import IChuCardArrow from "./IChuCardArrow";
-import LayerCardsData from "./LayerCardsData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html

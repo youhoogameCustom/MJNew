@@ -5,6 +5,7 @@ import MJCardChu2D from "./MJCardChu2D";
 import MJCardMing2D from "./MJCardMing2D";
 import MJPlayerCardHold from "./MJPlayerCardHold";
 import { IPlayerCardData } from "../ILayerCardsData";
+import IChuCardArrow from "../IChuCardArrow";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -40,6 +41,8 @@ export default class MJPlayerCard2D extends cc.Component implements IPlayerMJCar
 
     mData : IPlayerCardData = null ;
 
+    mArrow : IChuCardArrow = null ;
+
     onLoad ()
     {
         this.chuCards.posIdx = this.posIdx ;
@@ -57,6 +60,11 @@ export default class MJPlayerCard2D extends cc.Component implements IPlayerMJCar
         {
             cc.error( "not replay , not pos = 0 why set delegate pos = " + this.posIdx );
         }
+    }
+
+    setChuArrow( del : IChuCardArrow )
+    {
+        this.mArrow = del ;
     }
 
     onRefresh( cardData : IPlayerCardData ,isReplay : boolean , isSelf : boolean ) : void 
@@ -115,6 +123,10 @@ export default class MJPlayerCard2D extends cc.Component implements IPlayerMJCar
     {
         let p = this.holdCards.removeCard(chuCard);
         this.chuCards.addCard(chuCard,p ) ;
+        if ( this.mArrow )
+        {
+            this.mArrow.moveArrowToWorldPos( p );
+        }
     }
 
     onActed( actedData : PlayerActedCard )

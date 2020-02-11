@@ -29,6 +29,6 @@ export default interface IPlayerMJCard {
 
     onDistributedCards() : void ;
     onActMo( card : number ) : void;
-    onActChu( card : number ) : void
+    onActChu( card : number ) : void;
     onActed( actedData : PlayerActedCard ) ;
 }
