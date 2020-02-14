@@ -183,12 +183,19 @@ export default class LayerDlg extends cc.Component implements ILayerDlg {
   
         this.mDlgLocation.closeDlg();
 
-        this.mBtnCopyRoomNum.active = this.mBtnInvite.active = this.mData.isSeatFull() == false;
+        if ( this.mBtnCopyRoomNum != null && this.mBtnInvite != null )
+        {
+            this.mBtnCopyRoomNum.active = this.mBtnInvite.active = this.mData.isSeatFull() == false;
+        }
     }
 
     onGameStart() : void
     {
-        this.mBtnCopyRoomNum.active = this.mBtnInvite.active = false ;
+        if ( this.mBtnCopyRoomNum != null )
+        {
+            this.mBtnCopyRoomNum.active = this.mBtnInvite.active = false ;
+        }
+        
         if (  this.mDlgResultSingle != null )
         {
             this.mDlgResultSingle.closeDlg();

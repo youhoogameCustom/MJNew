@@ -21,5 +21,11 @@ export default class OptsNanJing extends IOpts {
         this.isCircle = false ;
         this.gameType = eGameType.eGame_NJMJ ;
         this.baseScore = 1 ;
+        this.seatCnt = 4 ;
+    }
+
+    getRuleDesc() : string 
+    {
+        return "南京麻将 " +  this.seatCnt + "人 " + this.roundCnt + "局" ;
     }
 }

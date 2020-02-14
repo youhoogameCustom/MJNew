@@ -9,6 +9,7 @@ import ILayerCardsData, { IPlayerCardData } from "./ILayerCardsData";
 import IRoomSceneData from "../IRoomSceneData";
 import MJFactory from "./cards3D/MJFactory";
 import IChuCardArrow from "./IChuCardArrow";
+import LayerCardsData from "./LayerCardsData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -49,7 +50,7 @@ export default class LayerPlayerCards extends cc.Component implements ILayerCard
     {
         cc.systemEvent.on( MJCardFactory2D.EVENT_FINISH_REFRESH_MJ,this.onRefreshMJ,this );
         cc.systemEvent.on( MJFactory.EVENT_FINISH_LOAD_CARD,this.onRefreshMJ,this );
-        this.setCardType(true);
+        this.setCardType(false);
         console.log( "layer card on load" );
     }
 
@@ -59,10 +60,14 @@ export default class LayerPlayerCards extends cc.Component implements ILayerCard
     }
 
     start () {
-        //this.mData = new LayerCardsData(); // just for test ;
         if ( this.isLoadedMJRes )
         {
            this.localRefresh( this.mData );
+        }
+
+        if ( G_TEST )
+        {
+            this.test();
         }
     }
 
@@ -88,6 +93,7 @@ export default class LayerPlayerCards extends cc.Component implements ILayerCard
     protected getPlayerCardBySvrIdx( svrIdx : number ) : IPlayerMJCard 
     {
         let nClientIdx = ( ( svrIdx - this.mBottomSvrIdx ) + this.mPlayerCards.length ) % this.mPlayerCards.length ;
+        cc.log( "player card svr idx = " + svrIdx + " client idx = " + nClientIdx );
         return this.mPlayerCards[nClientIdx] ;
     }
 
@@ -300,4 +306,13 @@ export default class LayerPlayerCards extends cc.Component implements ILayerCard
         this.mPlayerCards.forEach( (a,) => { a.switchCardHighLight(cardNum,false ) ; } );
     }
     // update (dt) {}
+
+    test()
+    {
+        let self = this ;
+        setTimeout(() => {
+            self.mData = new LayerCardsData(); // just for test ;
+            self.localRefresh(self.mData) ;
+        }, 1500 );
+    }
 }

@@ -1,4 +1,5 @@
 import { eRoomPeerState } from "../../../common/clientDefine";
+import ClientApp from "../../../globalModule/ClientApp";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -30,6 +31,7 @@ export default class MJPlayerBaseData {
         this.isOnline = info["isOnline"] ; 
         this.isReady = ( info["state"] & eRoomPeerState.eRoomPeer_Ready) == eRoomPeerState.eRoomPeer_Ready; 
         this.chip = info["chips"] ;
+        this.isSelf = this.uid == ClientApp.getInstance().getClientPlayerData().getSelfUID();
     }
     // update (dt) {}
 }

@@ -15,9 +15,7 @@ export interface IRoomInfoData
     getLeftMJCnt() : number ;
     getRoomID() : number ;
     getRule() : string ;
-    getTotalRound() : string ;
-    getCurRound() : string ;
-    isCircle() : boolean ;
+    getRoundDesc() : string ;
 }
 
 export interface IRoomPlayerData
@@ -27,6 +25,7 @@ export interface IRoomPlayerData
     uid : number ;
     isOnline : boolean ;
     isReady : boolean ;
+    huaCnt : number ;
     isEmpty() : boolean ;
 }
 

@@ -67,13 +67,18 @@ export default class LayerRoomInfo extends cc.Component implements ILayerRoomInf
         this.mData = data.getRoomInfoData();
         this.unscheduleAllCallbacks();
         this.roomID.string = this.mData.getRoomID().toString() ;
-        this.baseScore.string = "1" ;
+        if ( this.baseScore != null )
+        {
+            this.baseScore.string = "1" ;
+        }
+        
         this.rules.string = this.mData.getRule() ;
         this.leftMJCardCnt = this.mData.getLeftMJCnt() ;
+        this.round.string = this.mData.getRoundDesc();
         this.version.string = ClientApp.getInstance().getConfigMgr().getClientConfig().VERSION;
         
-        this.schedule(this.refreshTime,60,cc.macro.REPEAT_FOREVER,0);
-        this.schedule(this.refreshBatteryLevel,300,cc.macro.REPEAT_FOREVER,0);
+        this.schedule(this.refreshTime,30,cc.macro.REPEAT_FOREVER,0.1);
+        this.schedule(this.refreshBatteryLevel,300,cc.macro.REPEAT_FOREVER,0.1);
     }
 
     onGameStart() : void
@@ -97,6 +102,7 @@ export default class LayerRoomInfo extends cc.Component implements ILayerRoomInf
         {
             this.curTime.string = dt.getHours() + ":" + dt.getMinutes();
         }
+        console.log( "refreshTime = " + this.curTime.string );
     }
 
     protected refreshBatteryLevel()

@@ -28,6 +28,8 @@ export default class MJCardChu2D extends cc.Component {
     @property(MJCardFactory2D)
     mFactroy : MJCardFactory2D = null ;
 
+    mLastCard : MJCard2D = null ;
+
     refresh( vCards : number[] )
     {
         this.clear();
@@ -40,6 +42,7 @@ export default class MJCardChu2D extends cc.Component {
                 card.node.zIndex = this.node.childrenCount * -1  ;
             }
             card.node.position = this.getLastChuCardPos();
+            this.mLastCard = card ;
         }
     }
 
@@ -56,6 +59,7 @@ export default class MJCardChu2D extends cc.Component {
 
             this.mFactroy.recycleCard(card);
         }
+        this.mLastCard = null ;
     }
 
     addCard( cardNum : number, ptWorldPos : cc.Vec2  ) : cc.Vec2
@@ -67,6 +71,7 @@ export default class MJCardChu2D extends cc.Component {
             card.node.zIndex = this.node.childrenCount * -1  ;
         }
         card.node.position = this.getLastChuCardPos();
+        this.mLastCard = card ;
         return card.node.parent.convertToWorldSpaceAR( card.node.position );
     }
 
@@ -78,13 +83,15 @@ export default class MJCardChu2D extends cc.Component {
             return false ;
         }
 
-        let card = this.node.children[0].getComponent(MJCard2D);
+        let card = this.mLastCard;
         if ( card != null && card.mCardNum == cardNum )
         {
             this.mFactroy.recycleCard(card);
+            cc.log( "remove chu ok = " + cardNum );
+            this.mLastCard = null ;
             return true ;
         }
-
+        cc.error( "remove chu error = " + cardNum );
         return false ;
     }
 
@@ -95,7 +102,7 @@ export default class MJCardChu2D extends cc.Component {
 
     protected getLastChuCardPos() : cc.Vec2
     {
-        let COL_CNT = 6 ;
+        let COL_CNT = 9 ;
         let cnt = this.node.childrenCount;
         let rowIdx = Math.floor( ( cnt + COL_CNT -1 ) / COL_CNT ) - 1  ; 
         let colIdx = ( cnt -1 ) % COL_CNT ; 

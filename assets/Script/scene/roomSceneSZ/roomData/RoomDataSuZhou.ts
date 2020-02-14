@@ -37,7 +37,7 @@ export default class RoomDataSuZhou extends MJRoomData {
     {
         if ( eMsgType.MSG_ROOM_SCMJ_GAME_END == nMsgID )
         {
-            this.mSinglResultData.parseResultSZ(msg,this);
+            (this.mSinglResultData as ResultSingleDataSZ) .parseResultSZ(msg,this);
             for ( const item of this.mPlayers )
             {
                 if ( null == item || item.isEmpty() )
@@ -45,17 +45,17 @@ export default class RoomDataSuZhou extends MJRoomData {
                     continue ;
                 }
 
-                let pr = this.mSinglResultData.mResults[item.mPlayerBaseData.svrIdx];
+                // let pr = this.mSinglResultData.mResults[item.mPlayerBaseData.svrIdx];
                 
-                if ( pr.isEmpty() == false )
-                {
-                    item.mPlayerBaseData.chip = pr.mFinalChip ;
-                    item.mPlayerCard.vHoldCard.length = 0 ;
-                    item.mPlayerCard.vHoldCard = item.mPlayerCard.vHoldCard.concat(pr.mAnHoldCards );
-                }
+                // if ( pr.isEmpty() == false )
+                // {
+                //     item.mPlayerBaseData.chip = pr.mFinalChip ;
+                //     item.mPlayerCard.vHoldCard.length = 0 ;
+                //     item.mPlayerCard.vHoldCard = item.mPlayerCard.vHoldCard.concat(pr.mAnHoldCards );
+                // }
             }
 
-            this.mSceneDelegate.onGameEnd(this.mSinglResultData) ;
+            //this.mSceneDelegate.onGameEnd(this.mSinglResultData) ;
             this.endGame();
             return true;
         }

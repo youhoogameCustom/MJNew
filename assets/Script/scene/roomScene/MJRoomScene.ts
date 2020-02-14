@@ -18,6 +18,7 @@ import LayerPlayers from "./layerPlayers/LayerPlayers";
 import LayerDlg from "./layerDlg/LayerDlg";
 import LayerRoomInfo from "./layerRoomInfo/LayerRoomInfo";
 import VoiceManager from "../../sdk/VoiceManager";
+import MJCardFactory2D from "./layerCards/cards2D/MJCardFactory2D";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -62,14 +63,20 @@ export default class MJRoomScene extends cc.Component implements IRoomDataDelega
     onLoad () 
     {
         let self = this ;
-        let roomID = ClientApp.getInstance().getClientPlayerData().getBaseData().stayInRoomID;
-        cc.systemEvent.once( MJFactory.EVENT_FINISH_LOAD_CARD,()=>{ self.mRoomData.reqRoomInfo( roomID ) ;} ) ;
-        //cc.systemEvent.once( MJCardFactory2D.EVENT_FINISH_LOAD_MJ,()=>{ self.mRoomData.reqRoomInfo( roomID ) ;} ) ;
+        if ( G_TEST == false )
+        {
+            let roomID = ClientApp.getInstance().getClientPlayerData().getBaseData().stayInRoomID;
+            cc.systemEvent.once( MJFactory.EVENT_FINISH_LOAD_CARD,()=>{ self.mRoomData.reqRoomInfo( roomID ) ;} ) ;
+            cc.systemEvent.once( MJCardFactory2D.EVENT_FINISH_LOAD_MJ,()=>{ self.mRoomData.reqRoomInfo( roomID ) ;} ) ;
+        }
     }
 
     start () {
         this.mRoomData.mSceneDelegate = this ;
-        this.mLayerCards = this.mLayerPlayerCard.getComponent(LayerPlayerCards);
+        if ( this.mLayerCards == null )
+        {
+            this.mLayerCards = this.mLayerPlayerCard.getComponent(LayerPlayerCards);
+        }
         this.mLayerPlayers = this.mLayerPlayersNode.getComponent(LayerPlayers);
         this.mLayerDlg = this.mLayerDlgNode.getComponent( LayerDlg );
         this.mLayerRoomInfo = this.mLayerInfo.getComponent( LayerRoomInfo );
@@ -166,6 +173,10 @@ export default class MJRoomScene extends cc.Component implements IRoomDataDelega
             case eMJActType.eMJAct_BuGang_Done:
             {
                 --this.mLayerRoomInfo.leftMJCardCnt ;
+                if ( eMJActType.eMJAct_BuHua == actedData.eAct )
+                {
+                    this.mLayerPlayers.onPlayerBuhua(idx);
+                }
             }
             break ;
             default:

@@ -34,11 +34,19 @@ export class IPlayerCards
 
     nHuCard : number = 0 ;
     nPlayerIdx = -1 ;
+    bIsSelf : boolean = false;
 
+    isSelf(){ return this.bIsSelf ;}
 
-    isSelf(){ return this.vHoldCard.length > 0 ;}
-    parseFromMsg( info : Object , playerIdx : number )
+    getHuaCnt() : number
     {
+        return this.vBuedHua.length ;
+    }
+
+    parseFromMsg( info : Object , playerIdx : number , isSelf : boolean )
+    {
+        this.clear();
+        this.bIsSelf = isSelf ;
         this.nPlayerIdx = playerIdx ;
         let holdCnt = 0 ;
         if ( info["holdCnt"] != null )

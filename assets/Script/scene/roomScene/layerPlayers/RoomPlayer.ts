@@ -13,7 +13,7 @@ import { IRoomPlayerData } from "../IRoomSceneData";
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const {ccclass, property} = cc._decorator;
-enum eRoomPlayerState
+export enum eRoomPlayerState
 {
     RPS_Empty,
     RPS_WaitSitDown,
@@ -63,6 +63,8 @@ export default class RoomPlayer extends cc.Component implements IRoomPlayer {
     @property([cc.Component.EventHandler])
     lpfPlayerCallBack : cc.Component.EventHandler[] = [] ;  // ( isSitDown : boolean , uid : number | mSvrIdx )
 
+    private mHuaCntNumber : number = 0 ;
+
     onLoad ()
     {
         this.mBankIconPos.active = false ;
@@ -74,7 +76,7 @@ export default class RoomPlayer extends cc.Component implements IRoomPlayer {
         this.mHuaZi.color = clr ;
     }
 
-    private mState : eRoomPlayerState = eRoomPlayerState.RPS_Empty ;
+    protected mState : eRoomPlayerState = eRoomPlayerState.RPS_Empty ;
     
     set state( rs : eRoomPlayerState )
     {
@@ -145,6 +147,12 @@ export default class RoomPlayer extends cc.Component implements IRoomPlayer {
     set huaCnt( cnt : number ) 
     {
         this.mHuaCnt.string = cnt + "" ;
+        this.mHuaCntNumber = cnt ;
+    }
+
+    get huaCnt() : number
+    {
+        return this.mHuaCntNumber ; 
     }
 
     protected mWorlPosOfBankIcon : cc.Vec2 = null ;

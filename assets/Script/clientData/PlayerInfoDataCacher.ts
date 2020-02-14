@@ -36,8 +36,8 @@ export default class PlayerInfoDataCacher {
 
     private init()
     {
-        let self = this ;
-        cc.game.on(cc.game.EVENT_HIDE,()=>{ self.vPlayerInfos = {} ;}) ; // when hide app, we clean the cacher ;
+        //let self = this ;
+        //cc.game.on(cc.game.EVENT_HIDE,()=>{ self.vPlayerInfos = {} ;}) ; // when hide app, we clean the cacher ;
     }
 
     getPlayerInfoByID( uid : number, isForceReq : boolean = false ) : PlayerInfoData
@@ -46,7 +46,7 @@ export default class PlayerInfoDataCacher {
         {
             if ( this.vRequestingUIDs[uid] )
             {
-                console.error( "already requesting palyer info data uid = " + uid );
+                console.warn( "already requesting palyer info data uid = " + uid );
                 return null ;
             }
 

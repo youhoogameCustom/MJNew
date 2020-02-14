@@ -24665,3 +24665,5 @@ declare let CC_TEST: boolean;
 declare let CC_WECHATGAME: boolean;
 /** Running in the bricks. */
 declare let CC_QQPLAY: boolean;
+
+declare let G_TEST: boolean;

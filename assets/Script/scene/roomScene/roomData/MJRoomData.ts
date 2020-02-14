@@ -63,6 +63,9 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
             return ;
         }
 
+        this.mPlayers.length = 0 ;
+        this.mBaseData = null ;
+        
         let msgReqRoomInfo = { } ;
         let port = Utility.getMsgPortByRoomID( nRoomID ) ;
         this.sendMsg(msgReqRoomInfo,eMsgType.MSG_REQUEST_ROOM_INFO,port,nRoomID) ;       
@@ -459,6 +462,7 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
                     cc.error("peng act do not have invoker idx key ");
                     break;
                 }
+                cc.log( "eMJAct_Peng invoker idx = " + invokerIdx );
                 this.mPlayers[invokerIdx].mPlayerCard.removeChu(targetCard);
                 let acted = roomPlayer.mPlayerCard.onPeng(targetCard,invokerIdx) ;
                 this.mSceneDelegate.onPlayerActed(svrIdx,acted);
@@ -487,6 +491,7 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
                     cc.error("mingGang act do not have invoker idx key ");
                     break;
                 }
+                cc.log( "eMJAct_MingGang invoker idx = " + invokerIdx );
                 this.mPlayers[invokerIdx].mPlayerCard.removeChu(targetCard);
                 let acted = roomPlayer.mPlayerCard.onMingGang(targetCard,msg["gangCard"],invokerIdx) ;
                 this.mSceneDelegate.onPlayerActed(svrIdx,acted);
@@ -865,19 +870,9 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
         return this.mOpts.getRuleDesc();
     }
 
-    getTotalRound() : string 
+    getRoundDesc() : string 
     {
-        return this.mOpts.roundCnt + "" ;
-    }
-
-    getCurRound() : string 
-    {
-        return (this.mOpts.roundCnt - this.mBaseData.leftCircle ) + "";
-    }
-
-    isCircle() : boolean 
-    {
-        return this.mOpts.isCircle ;
+        return (this.mOpts.roundCnt - this.mBaseData.leftCircle ) + "/" + this.mOpts.roundCnt + "" + ( this.mOpts.isCircle ? "圈" : "局" );
     }
 
     // interface ILayerPlayersData

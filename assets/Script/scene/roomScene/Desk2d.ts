@@ -47,7 +47,11 @@ export default class Desk2d extends cc.Component {
             this.mDeskBg = this.node.addComponent(cc.Sprite);
         }
 
-        let idx = ClientApp.getInstance().getConfigMgr().getSettingConfig().deskBgIdx;
+        let idx = 0 ;
+        if ( G_TEST == false )
+        {
+            idx = ClientApp.getInstance().getConfigMgr().getSettingConfig().deskBgIdx;
+        }
 
         let vDeskRes = ["zhuomian_lv","zhuomian_lan","zhuomian_hong"] ;
         let self = this ;

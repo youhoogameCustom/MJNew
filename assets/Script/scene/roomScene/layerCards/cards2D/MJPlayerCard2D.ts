@@ -122,7 +122,7 @@ export default class MJPlayerCard2D extends cc.Component implements IPlayerMJCar
     onActChu( chuCard : number ) : void 
     {
         let p = this.holdCards.removeCard(chuCard);
-        this.chuCards.addCard(chuCard,p ) ;
+        p = this.chuCards.addCard(chuCard,p ) ;
         if ( this.mArrow )
         {
             this.mArrow.moveArrowToWorldPos( p );
@@ -170,6 +170,11 @@ export default class MJPlayerCard2D extends cc.Component implements IPlayerMJCar
             case eMJActType.eMJAct_Hu:
             {
                 this.onHu(actedData.nTargetCard, false )  ;
+            }
+            break ;
+            case eMJActType.eMJAct_BuHua:
+            {
+                this.onBuHua(actedData.nTargetCard,actedData.vAddtionCards[0]);
             }
             break ;
             default:
@@ -225,11 +230,16 @@ export default class MJPlayerCard2D extends cc.Component implements IPlayerMJCar
 
     onSelfChu( chuCard : number , ptWorldPost : cc.Vec2 ) : boolean
     {
-        if ( this.mData.reqChu(chuCard) == false )
+        if ( G_TEST == false && this.mData.reqChu(chuCard) == false )
         {
             return false ;
         }
-        this.chuCards.addCard(chuCard,ptWorldPost ) ;
+        
+        let p = this.chuCards.addCard(chuCard,ptWorldPost ) ;
+        if ( this.mArrow )
+        {
+            this.mArrow.moveArrowToWorldPos( p );
+        }
         return true ;
     }
 

@@ -20,4 +20,5 @@ export default interface ILayerPlayers extends IRoomLayer {
     onPlayerSitDown( p : IRoomPlayerData ) : void;
     onPlayerStandUp( idx : number ) : void ;
     onPlayerReady( idx : number ) : void ;
+    onPlayerBuhua( playerIdx : number ) : void ;
 }

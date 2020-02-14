@@ -233,6 +233,11 @@ export default class LayerPlayers extends cc.Component implements ILayerPlayers 
         this.refreshPlayerChips();
     }
 
+    onPlayerBuhua( playerSvrIdx : number ) : void 
+    {
+        let playerIdx = this.mData.svrIdxToClientIdx( playerSvrIdx );
+        this.mPlayers[playerIdx].huaCnt = this.mPlayers[playerIdx].huaCnt + 1 ;
+    }
     //---interface end ;
     protected localRefresh()
     {

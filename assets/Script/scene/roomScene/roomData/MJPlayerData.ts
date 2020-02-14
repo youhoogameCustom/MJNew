@@ -43,7 +43,7 @@ export default class MJPlayerData implements IRoomPlayerData, IPlayerCardData
             // no card info ;
             return ;
         }
-        this.mPlayerCard.parseFromMsg( jsPlayer,this.mPlayerBaseData.svrIdx );
+        this.mPlayerCard.parseFromMsg( jsPlayer,this.mPlayerBaseData.svrIdx,this.mPlayerBaseData.isSelf );
     }
 
     clear()
@@ -71,6 +71,11 @@ export default class MJPlayerData implements IRoomPlayerData, IPlayerCardData
     get isReady() : boolean 
     {
         return this.mPlayerBaseData.isReady ;
+    }
+
+    get huaCnt() : number
+    {
+        return this.mPlayerCard.getHuaCnt();
     }
 
     set isReady( isr : boolean )
