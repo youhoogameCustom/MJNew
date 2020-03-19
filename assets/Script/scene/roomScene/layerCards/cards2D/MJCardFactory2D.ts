@@ -102,7 +102,7 @@ export default class MJCardFactory2D extends cc.Component {
         card2d.mAtalsResName = this.mSpriteAtals.name ;
         node.setContentSize( sp.spriteFrame.getOriginalSize() ) ;
 
-        cc.log( "create card = " + cardNum );
+        //cc.log( "create card = " + cardNum );
         return card2d ;
     }
 

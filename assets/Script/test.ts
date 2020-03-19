@@ -1,4 +1,9 @@
  import * as _ from "lodash"
+import MJCardFactory2D from "./scene/roomScene/layerCards/cards2D/MJCardFactory2D";
+import HuChecker from "./scene/roomScene/roomData/HuChecker";
+import { eCardSate, eMJCardType } from "./scene/roomScene/roomDefine";
+import MJCard2D from "./scene/roomScene/layerCards/cards2D/MJCard2D";
+import MJCard from "./scene/roomScene/layerCards/cards3D/MJCard";
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -16,9 +21,55 @@ export default class test extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
     // onLoad () {}
+    @property(MJCardFactory2D)
+    mFacotry : MJCardFactory2D = null ;
+
+    @property(cc.Node)
+    mHold : cc.Node = null ;
+    
+    @property(cc.Node)
+    mHuCards : cc.Node = null ;
+
+    mChecker : HuChecker = new HuChecker() ;
 
     start () {
         //this.mPlayerCards.isSelf = false;  
+        if ( G_TEST )
+        {
+            let self = this ;
+            setTimeout(() => {
+                self.test();
+            }, 5000 );
+        }
+    }
+
+    test()
+    {
+        //1112345678999
+        let vCards = [MJCard.makeCardNum(eMJCardType.eCT_Wan,2),MJCard.makeCardNum(eMJCardType.eCT_Wan,2),
+            MJCard.makeCardNum(eMJCardType.eCT_Tiao,1),MJCard.makeCardNum(eMJCardType.eCT_Tiao,2),MJCard.makeCardNum(eMJCardType.eCT_Tiao,3),
+            MJCard.makeCardNum(eMJCardType.eCT_Tiao,4),MJCard.makeCardNum(eMJCardType.eCT_Tiao,5),MJCard.makeCardNum(eMJCardType.eCT_Tiao,6),
+
+            MJCard.makeCardNum(eMJCardType.eCT_Tong,2),MJCard.makeCardNum(eMJCardType.eCT_Tong,3),MJCard.makeCardNum(eMJCardType.eCT_Tong,4),
+
+            MJCard.makeCardNum(eMJCardType.eCT_Tong,5),MJCard.makeCardNum(eMJCardType.eCT_Tong,6)
+        ] ;
+    
+        let today = new Date();
+        let milliseconds = today.getTime();
+        console.log("milliseconds:", milliseconds);
+        let vHu = this.mChecker.getTingCards(vCards) ;
+        console.log((new Date().getTime() - milliseconds) / 1000 + " s");
+        console.log(" ----can hu : " + vHu);
+        for ( let v of vCards )
+        {
+            this.mHold.addChild( this.mFacotry.getCard(v,0,eCardSate.eCard_Out).node);
+        }
+
+        for ( let v of vHu )
+        {
+            this.mHuCards.addChild( this.mFacotry.getCard(v,0,eCardSate.eCard_Out).node);
+        }
     }
 
      onClick()

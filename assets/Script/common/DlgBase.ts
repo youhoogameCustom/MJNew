@@ -27,6 +27,8 @@ export default class DlgBase extends cc.Component {
 
     protected pFuncResult : ( jsResult : Object ) => void = null ;
     protected pOnCloseCallBack : ( pTargetDlg : DlgBase ) => void = null ;
+
+    protected captureEventNode : cc.Node = null ;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad ()
@@ -46,6 +48,7 @@ export default class DlgBase extends cc.Component {
         this.pRootNode.addChild(pCaptureEnvetNode,-1,"capNode");
         pCaptureEnvetNode.on( cc.Node.EventType.TOUCH_START ,this.onTouchBegin,this ) ;
         pCaptureEnvetNode.on( cc.Node.EventType.TOUCH_END ,this.onTouchEnd,this ) ;
+        this.captureEventNode = pCaptureEnvetNode ;
     }
 
     onDestroy()
@@ -56,7 +59,7 @@ export default class DlgBase extends cc.Component {
     protected onTouchBegin( touch : cc.Touch )
     {
         //console.log("touch begin");
-        return true ;
+        return false ;
     }
 
     protected onTouchEnd( touchEvent : cc.Event.EventTouch )

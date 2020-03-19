@@ -21,7 +21,7 @@ export default class ListView extends cc.Component {
 
     private content: cc.Node = null;
 
-    private adapter: AbsAdapter = null;
+    private adapter: IAbsAdapter = null;
 
     private readonly _items: cc.NodePool = new cc.NodePool();
     // 记录当前填充在树上的索引. 用来快速查找哪些位置缺少item了.
@@ -76,7 +76,7 @@ export default class ListView extends cc.Component {
         this.adjustEvent();
     }
 
-    public async setAdapter(adapter: AbsAdapter) {
+    public async setAdapter(adapter: IAbsAdapter) {
         this.adapter = adapter;
         if (this.adapter == null) {
             console.warn("adapter 为空.")
@@ -87,7 +87,7 @@ export default class ListView extends cc.Component {
             return;
         }
 
-        this.notifyUpdate();
+        //this.notifyUpdate();
     }
 
     public getItemIndex(height: number): number {
@@ -128,6 +128,7 @@ export default class ListView extends cc.Component {
             //console.log( this.content.y +" after = " + this.content.getParent().height + " anchor = " + this.content.getParent().anchorY );
             // add by bill xu , 此处必须手动赋值，否自会因为精度问题，导致界面不刷新，scrollTop 并不能真正滑倒最顶部会有0.0000001的误差,
             // 所以手动赋值，赋值不能代替scrollToTop函数，因为函数内部会做一些通知类的事情
+            if ( this.horizontal == false )
             {
                 this.content.y = this.content.getParent().height * this.content.getParent().anchorY;
             }
@@ -214,7 +215,7 @@ export default class ListView extends cc.Component {
         // 增加一个tag 属性用来存储child的位置索引.
         child["_tag"] = posIndex;
         this._filledIds[posIndex] = posIndex;
-        child.setPosition(child.width * (child.anchorX + posIndex) + this.spacing * posIndex, 0);
+        child.setPosition(child.width * (child.anchorX + posIndex) + this.spacing * posIndex, 0 );
     }
 
     // 获取可回收item
@@ -379,8 +380,14 @@ export default class ListView extends cc.Component {
     }
 }
 
+export interface IAbsAdapter
+{
+    getCount(): number ;
+    _getView(item: cc.Node, posIndex: number): cc.Node ;
+}
+
 // 数据绑定的辅助适配器
-export abstract class AbsAdapter {
+export abstract class AbsAdapter implements IAbsAdapter {
 
     private dataSet: any[] = [];
 

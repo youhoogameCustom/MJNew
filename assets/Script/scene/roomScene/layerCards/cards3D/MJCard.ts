@@ -132,9 +132,9 @@ export default class MJCard extends cc.Component {
 
    public static parseCardType( nCardNum : number  ) : eMJCardType
    {
-       var nType = nCardNum & 0xF0 ;
+       let nType = nCardNum & 0xF0 ;
        nType = nType >> 4 ;
-       var type = <eMJCardType>nType ;
+       let type = <eMJCardType>nType ;
        if ( ( type < eMJCardType.eCT_Max && type > eMJCardType.eCT_None) == false )
        {
             console.error("parse card type error , cardnum = " + nCardNum) ;

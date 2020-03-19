@@ -28,4 +28,9 @@ export default class OptsNanJing extends IOpts {
     {
         return "南京麻将 " +  this.seatCnt + "人 " + this.roundCnt + "局" ;
     }
+
+    get isJingYuanZi() : boolean 
+    {
+        return true ;
+    }
 }

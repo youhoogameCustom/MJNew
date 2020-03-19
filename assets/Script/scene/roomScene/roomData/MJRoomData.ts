@@ -18,6 +18,7 @@ import ILayerDlgData, { IDissmissDlgData, ISingleResultDlgData, ITotalResultDlgD
 import ILayerCardsData, { IPlayerCardData } from "../layerCards/ILayerCardsData";
 import ResultTotalData from "./ResultTotalData";
 import ResultSingleData from "./ResultSingleData";
+import { IResultData } from "./IResultData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,8 +39,8 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
     mBaseData : MJRoomBaseData = null ;
     mPlayers : MJPlayerData[] = [] ;
     mSceneDelegate : IRoomDataDelegate = null ; 
-    mSinglResultData : ISingleResultDlgData = null ;
-    mTotalResultData : ITotalResultDlgData = null;
+    mSinglResultData : IResultData = null ;
+    mTotalResultData : IResultData = null;
 
 
     protected init()
@@ -285,14 +286,14 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
                 //         item.mPlayerCard.vHoldCard = item.mPlayerCard.vHoldCard.concat(pr.mAnHoldCards );
                 //     }
                 // }
-                this.getSingleResultDlgData().parseResult(msg);
+                this.mSinglResultData.parseResult(msg,this);
                 this.mSceneDelegate.onGameEnd() ;
                 this.endGame();
             }
             break ;
             case eMsgType.MSG_ROOM_GAME_OVER:
             {
-                this.getTotalResultDlgData().parseResult(msg);
+                this.mTotalResultData.parseResult(msg,this);
                 this.mSceneDelegate.onRoomOvered() ;
                 this.mBaseData.isRoomOver = true ;
             }
@@ -1035,17 +1036,16 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
         return this ;
     }
 
-    getSingleResultDlgData() : ISingleResultDlgData 
+    getSingleResultDlgData() : any 
     {
         if ( null == this.mSinglResultData )
         {
             this.mSinglResultData = new ResultSingleData();
-            (this.mSinglResultData as ResultSingleData).init(this);
         }
         return this.mSinglResultData ;
     }
 
-    getTotalResultDlgData() : ITotalResultDlgData 
+    getTotalResultDlgData() : any 
     {
         if ( this.mTotalResultData == null )
         {

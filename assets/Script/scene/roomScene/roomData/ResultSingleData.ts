@@ -1,6 +1,7 @@
 import { eMJActType ,eFanxingType } from "../roomDefine";
 import { ISingleResultDlgDataItem, ISingleResultDlgData } from "../layerDlg/ILayerDlgData";
 import MJRoomData from "./MJRoomData";
+import { IResultData } from "./IResultData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -188,20 +189,17 @@ export class ResultItem implements ISingleResultDlgDataItem
 
 } 
 
-export default class ResultSingleData implements ISingleResultDlgData {
+export default class ResultSingleData implements ISingleResultDlgData , IResultData {
 
     mResults : ResultItem[] = []; 
 
     mIsLiuJu : boolean = true ;
     mDianPaoIdx : number = -1 ;
     mRoomData : MJRoomData = null ;
-    init( data : MJRoomData )
-    {
-        this.mRoomData = data ;
-    }
 
-    parseResult( js : Object ) : void
+    parseResult( js : Object , roomData : MJRoomData) : void
     {
+        this.mRoomData = roomData ;
         if ( this.mResults.length == 0 )
         {
             this.mResults.push( new ResultItem() );

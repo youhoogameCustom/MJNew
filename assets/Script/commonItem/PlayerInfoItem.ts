@@ -108,9 +108,10 @@ export default class PlayerInfoItem extends cc.Component {
         this.pFemaleIcon.active = !this.pMaleIcon.active ;
 
         //console.log("this.pPhotoSprite.node " + this.pPhotoSprite.node.getParent().active );
-        if ( this.pPhotoSprite.node.getParent().active )
+        if ( this.pPhotoSprite.node.activeInHierarchy )
         {
             this.setHeadUrl(info.headUrl) ;
+            
         }
     }
 

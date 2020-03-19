@@ -42,6 +42,11 @@ export default class PlayerInfoDataCacher {
 
     getPlayerInfoByID( uid : number, isForceReq : boolean = false ) : PlayerInfoData
     {
+        if ( G_TEST )
+        {
+            return null;
+        }
+
         if ( this.vPlayerInfos[uid] == null || isForceReq )
         {
             if ( this.vRequestingUIDs[uid] )

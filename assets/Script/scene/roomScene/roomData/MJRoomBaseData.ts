@@ -101,5 +101,6 @@ export default class MJRoomBaseData {
         this.otherCanActCard = 0 ;
         this.leftMJCnt = this.initCardCnt ;
         this.bankerIdx = -1 ;
+        this.leftCircle = -1 ;
     }
 }

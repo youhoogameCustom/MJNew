@@ -83,12 +83,12 @@ export default class LayerRoomInfo extends cc.Component implements ILayerRoomInf
 
     onGameStart() : void
     {
-
+        this.round.string = this.mData.getRoundDesc();
     }
 
     onGameEnd()
     {
-
+        this.round.string = this.mData.getRoundDesc();
     }
 
     protected refreshTime()

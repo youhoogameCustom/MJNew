@@ -5,6 +5,8 @@ import MJPlayerData from "../../../scene/roomScene/roomData/MJPlayerData";
 import { eMsgType } from "../../../common/MessageIdentifer";
 import NJRealTimeSettle from "./NJRealTimeSettle";
 import INJRoomDataDelegate from "./INJRoomDataDelegate";
+import NJResultTotalData from "./NJResultTotalData";
+import NJResultSingleData from "./NJResultSingleData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,7 +37,8 @@ export default class NJRoomData extends MJRoomData {
     {
         this.mOpts = new OptsNanJing();
         this.mBaseData = new MJRoomBaseData();
-        //this.mSinglResultData = new ResultSingleDataSZ();
+        this.mSinglResultData = new NJResultSingleData();
+        this.mTotalResultData = new NJResultTotalData();
  
         let icnt = 4 ;
         while ( icnt-- )
@@ -52,7 +55,6 @@ export default class NJRoomData extends MJRoomData {
             (this.mSceneDelegate as INJRoomDataDelegate).onPlayerRealTimeSettle(this.mRealTimeSettle) ;
             return true ;
         }
-
         return super.onMsg( nMsgID,msg) ;
     }
     // update (dt) {}

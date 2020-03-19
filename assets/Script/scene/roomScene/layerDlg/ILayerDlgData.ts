@@ -37,7 +37,6 @@ export interface ISingleResultDlgDataItem
 
 export interface ISingleResultDlgData
 {
-    parseResult( js : Object ) : void ;
     isLiuJu() : boolean ;
     getSelfIdx() : number ;
     getResultItems() : ISingleResultDlgDataItem[] ;
@@ -52,7 +51,6 @@ export interface ITotalResultDlgData
 {
     roomID : number ;
     ruleDesc : string ;
-    parseResult( js : Object ) : void ;
     isPlayerApplyDismiss( uid : number ) : boolean ;
     isPlayerRoomOwner( uid : number ) : boolean ;
     isPlayerBigWiner( uid : number ) : boolean ;
@@ -70,8 +68,8 @@ export default interface ILayerDlgData {
     getEatOpts() : eEatType[] ;
     getEatTargetCard() : number ;
     getLocationDlgData() : ILocationDlgData ;
-    getSingleResultDlgData() : ISingleResultDlgData ;
-    getTotalResultDlgData() : ITotalResultDlgData ;
+    getSingleResultDlgData() : any ;
+    getTotalResultDlgData() : any ;
 
     reqAct( act : eMJActType , detail : any ) : void ; // detail : gang card or eat type ; 
     reqDoReady() : void ;
