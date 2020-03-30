@@ -145,7 +145,7 @@ export default class DlgMemberOptHY extends DlgBase {
             }
 
             let self = this ;
-            this.mData.reqModifyRemark( ( ret : number , tip : string )=>{
+            this.mData.reqModifyRemark( this.mRemark.string  ,( ret : number , tip : string )=>{
                 if ( false == G_TEST )
                 {
                     Prompt.promptText(tip);

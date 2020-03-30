@@ -2,6 +2,7 @@ import ClubDataBase from "../../../clientData/clubData/ClubDataBase";
 import { IControlCenterDataHY } from "../ISceneClubHYData";
 import IOpts from "../../../opts/IOpts";
 import { eMsgType } from "../../../common/MessageIdentifer";
+import OptsFactory from "../../../opts/OptsFactory";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,17 +37,73 @@ export default class ClubDataBaseDataHY extends ClubDataBase implements IControl
 
     getWanFaList() : { idx : number , content : string }[] 
     {
-
+        let v :  { idx : number , content : string } [] = [] ;
+        let opss = this._dataJs["optsInfo"] ;
+        for ( let item of opss )
+        {
+            let idx = item["optsIdx"] ;
+            let opts = OptsFactory.createOpts(item["optsValue"]) ;
+            v.push( { idx : idx,content : opts.getRuleDesc() } );
+        }
+        return v ;
     }
 
     reqAddWanFa( opts : IOpts , pRet : ( ret : number , content : string )=>void) 
     {
+        let clubID = this.clubID;
+        let msg = {} ;
+        msg["clubID"] = clubID ;
+        msg["opts"] = opts.jsOpts ;
+        let self = this ;
+        this.sendClubMsgWithCallBack(eMsgType.MSG_CLUB_ADD_ROOM_OPTS,msg,( js : Object )=>{
+            let ret : number = js["ret"] ;
+            if ( ret == 0 )
+            {
+                self.fetchData(true);
+            }
 
+            let verror = [ "添加成功" , "权限不足","玩法数量超过限制","重复玩法","无效玩家对象"] ;
+            let info = "" ;
+            if ( ret < verror.length )
+            {
+                info = verror[ret] ;
+            }
+            else
+            {
+                info = "error code = " + ret ;
+            }
+            pRet(ret,info) ;
+            return true ;
+        } );
     }
 
     reqDeleteWanFa( idx : number , pRet : ( ret : number , content : string )=>void )
     {
+        let clubID = this.clubID;
+        let msg = {} ;
+        msg["clubID"] = clubID ;
+        msg["idx"] = idx ;
+        let self = this ;
+        this.sendClubMsgWithCallBack(eMsgType.MSG_CLUB_ERASE_ROOM_OPTS,msg,( js : Object )=>{
+            let ret : number = js["ret"] ;
+            if ( ret == 0 )
+            {
+                self.fetchData(true);
+            }
 
+            let verror = [ "删除成功" , "权限不足","操作失败","参数错误","无效玩家对象"] ;
+            let info = "" ;
+            if ( ret < verror.length )
+            {
+                info = verror[ret] ;
+            }
+            else
+            {
+                info = "error code = " + ret ;
+            }
+            pRet(ret,info) ;
+            return true ;
+        } );
     }
 
     reqChangeName( newName : string , pRet : ( ret : number , content : string )=>void )

@@ -3,8 +3,6 @@ import Network from "../common/Network";
 import ClientPlayerBaseData from "./ClientPlayerBaseData";
 import ClientPlayerClubs from "./ClientPlayerClubs";
 import RecorderData from "./RecorderData";
-import ClubDataRecorderHY from "../sceneHaoYun/sceneClub/data/ClubDataRecorderHY";
-
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -14,9 +12,7 @@ import ClubDataRecorderHY from "../sceneHaoYun/sceneClub/data/ClubDataRecorderHY
 // Learn life-cycle callbacks:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
-
 const {ccclass, property} = cc._decorator;
-
 @ccclass
 export default class ClientPlayerData {
 
@@ -26,17 +22,15 @@ export default class ClientPlayerData {
     private _baseData : ClientPlayerBaseData = null ;
     private _Clubs : ClientPlayerClubs = null ;
     private _Recorders : RecorderData = null ; 
- 
+   
     init()
     {
         cc.systemEvent.on(Network.EVENT_MSG,( event : cc.Event.EventCustom )=>{
             let nMsgID : number = event.detail[Network.MSG_ID] ;
             let msg : Object = event.detail[Network.MSG_DATA] ;
-            this.onMsg(nMsgID,msg);
-        }) ;
-
-        let p = new ClubDataRecorderHY();
-    }
+            this.onMsg(nMsgID,msg); 
+        }) ;                        
+    }  
 
     onMsg( msgID : eMsgType , msg : Object )
     {
@@ -50,11 +44,11 @@ export default class ClientPlayerData {
                 }
                 this._baseData.initByMsg(msg);
 
-                if ( this._Clubs == null ) 
-                {
-                    this._Clubs = new ClientPlayerClubs();
-                    this._Clubs.init(this) ;  
-                }
+                // if ( this._Clubs == null ) 
+                // {
+                //     this._Clubs = new ClientPlayerClubs();
+                //     this._Clubs.init(this) ;  
+                // }
                 
                 if ( this._Recorders == null )
                 {
@@ -97,6 +91,17 @@ export default class ClientPlayerData {
     getClubs() : ClientPlayerClubs
     {
         return this._Clubs ;
+    }
+
+    setClubs( club : ClientPlayerClubs )
+    {
+        if ( this._Clubs != null )
+        {
+            console.error( "clubs is alreay set " );
+            return ;
+        }
+        this._Clubs = club ;
+        this._Clubs.init(this) ;
     }
 
     getRecorder() : RecorderData

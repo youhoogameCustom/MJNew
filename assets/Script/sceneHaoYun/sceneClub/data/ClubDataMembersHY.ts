@@ -71,7 +71,32 @@ class ClubMemberHY extends ClubMember implements IDlgMemberOptDataHY
 
     reqTransfer( pret : ( ret : number , result : string )=>void ) : void 
     {
-        this.reqSetMemberPrivige(eClubPrivilige.eClubPrivilige_Creator,pret ) ;
+        let clubID = this._members.getClub().clubID;
+        let msg = {} ;
+        msg["clubID"] = clubID ;
+        msg["uid"] = this.uid ;
+        msg["targetID"] = ClientApp.getInstance().getClientPlayerData().getSelfUID();
+        let self = this ;
+        this._members.sendClubMsgWithCallBack(eMsgType.MSG_CLUB_TRANSFER_CREATOR,msg,( js : Object )=>{
+            let ret : number = js["ret"] ;
+            if ( ret == 0 )
+            {
+                self._members.fetchData(true);
+            }
+
+            let verror = [ "操作成功" , "目标参数不合法","目标玩家不合法","不是创建者,不能转移","无效玩家对象","权限不足"] ;
+            let info = "" ;
+            if ( ret < verror.length )
+            {
+                info = verror[ret] ;
+            }
+            else
+            {
+                info = "error code = " + ret ;
+            }
+            pret(ret,info) ;
+            return true ;
+        } );
     }
 
     reqUpgrade( pret : ( ret : number , result : string )=>void ) : void 
@@ -117,9 +142,35 @@ class ClubMemberHY extends ClubMember implements IDlgMemberOptDataHY
         this.reqSetMemberPrivige( this.isForbitonEnter ? eClubPrivilige.eClubPrivilige_Normal : eClubPrivilige.eClubPrivilige_Forbid,pret ) ;
     }
 
-    reqModifyRemark( pret : ( ret : number , result : string )=>void ) : void 
+    reqModifyRemark( newRemark : string , pret : ( ret : number , result : string )=>void ) : void 
     {
+        let clubID = this._members.getClub().clubID;
+        let msg = {} ;
+        msg["clubID"] = clubID ;
+        msg["uid"] = this.uid ;
+        msg["remark"] = newRemark ;
+        let self = this ;
+        this._members.sendClubMsgWithCallBack(eMsgType.MSG_CLUB_UPDATE_MEMBER_REMARK,msg,( js : Object )=>{
+            let ret : number = js["ret"] ;
+            if ( ret == 0 )
+            {
+                //self.fetchData(true);
+                self.remarkName = newRemark ;
+            }
 
+            let verror = [ "操作成功" , "目标参数不合法","目标玩家不合法","该玩家不在本俱乐部","无效玩家对象","权限不足"] ;
+            let info = "" ;
+            if ( ret < verror.length )
+            {
+                info = verror[ret] ;
+            }
+            else
+            {
+                info = "error code = " + ret ;
+            }
+            pret(ret,info) ;
+            return true ;
+        } );
     }
     
     protected reqSetMemberPrivige( privliage : eClubPrivilige ,pret : ( ret : number , result : string )=>void )
@@ -230,7 +281,31 @@ export default class ClubDataMembersHY extends ClubDataMembers {
 
     reqInvite( uid : number , pRet : ( ret : number , retContent : string )=>void ) : void 
     {
+        let clubID = this.clubID;
+        let msg = {} ;
+        msg["clubID"] = clubID ;
+        msg["uid"] = uid ;
+        let self = this ;
+        this.sendClubMsgWithCallBack(eMsgType.MSG_CLUB_FORCE_INVITE_MEMBER,msg,( js : Object )=>{
+            let ret : number = js["ret"] ;
+            if ( ret == 0 )
+            {
+                //self.fetchData(true);
+            }
 
+            let verror = [ "操作成功" , "目标玩家不合法","目标玩家不合法2","该玩家已经在本俱乐部","无效玩家对象","俱乐部已经满员了，无法邀请"] ;
+            let info = "" ;
+            if ( ret < verror.length )
+            {
+                info = verror[ret] ;
+            }
+            else
+            {
+                info = "error code = " + ret ;
+            }
+            pRet(ret,info) ;
+            return true ;
+        } );
     }
 
     protected createMemberItem() : ClubMember

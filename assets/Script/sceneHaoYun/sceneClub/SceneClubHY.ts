@@ -90,6 +90,12 @@ export default class SceneClubHY extends cc.Component implements IAbsAdapter, ID
             else
             {
                 this.mData = ClientApp.getInstance().getClientPlayerData().getClubs() as SceneClubDataHY;
+                if ( this.mData == null )
+                {
+                    let p = new SceneClubDataHY();
+                    ClientApp.getInstance().getClientPlayerData().setClubs( p );
+                    this.mData = p ;  
+                }
             }
         }
     }

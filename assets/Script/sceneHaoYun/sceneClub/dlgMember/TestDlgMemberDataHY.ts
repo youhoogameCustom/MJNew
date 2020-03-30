@@ -46,7 +46,7 @@ class MemberItemData implements IDlgMemberOptDataHY
 
     }
 
-    reqModifyRemark( pret : ( ret : number , result : string )=>void ) : void 
+    reqModifyRemark( newmark : string , pret : ( ret : number , result : string )=>void ) : void 
     {
 
     }

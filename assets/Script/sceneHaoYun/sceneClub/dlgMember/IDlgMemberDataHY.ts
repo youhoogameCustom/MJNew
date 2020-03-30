@@ -30,7 +30,7 @@ export interface IDlgMemberOptDataHY extends IMemberItemDataHY
     reqUpgrade( pret : ( ret : number , result : string )=>void ) : void ;
     reqKickOut( pret : ( ret : number , result : string )=>void ) : void ;
     reqSwitchForbiton( pret : ( ret : number , result : string )=>void ) : void ;
-    reqModifyRemark( pret : ( ret : number , result : string )=>void ) : void ; 
+    reqModifyRemark( newRemark : string ,pret : ( ret : number , result : string )=>void ) : void ; 
 }
 
 export interface IApplyItemDataHY
