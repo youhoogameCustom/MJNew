@@ -46,7 +46,7 @@ export default class ClientPlayerClubs implements IClientPlayerDataComponent, IC
         let vCIDs = data.getBaseData().getJoinedClubsID();
         for ( let v of vCIDs )
         {
-            let pClub = new ClubData() ;
+            let pClub = this.createClubData() ;
             pClub.init(v,this) ;
             this.vClubs[this.vClubs.length] = pClub ;
         }
@@ -158,14 +158,21 @@ export default class ClientPlayerClubs implements IClientPlayerDataComponent, IC
 
     addClub( clubID : number )
     {
-        let pClub = new ClubData() ;
+        let pClub = this.createClubData() ;
         pClub.init( clubID, this ) ;
         this.vClubs[this.vClubs.length] = pClub ;
         pClub.getClubBase().fetchData(true);
+        pClub.getClubRooms().fetchData(true);
+        pClub.getClubEvents().fetchData(true);
         if ( this.pDelegate )
         {
             this.pDelegate.onNewClub( pClub ) ;
         }
+    }
+
+    protected createClubData() : ClubData
+    {
+        return new ClubData();
     }
 
     // interface IClubLayerDlgData
@@ -230,7 +237,7 @@ export default class ClientPlayerClubs implements IClientPlayerDataComponent, IC
         return this.mCurClub.getClubBase();
     }
     
-    reqJoinClub( clubID : number ) : boolean 
+    reqJoinClub( clubID : number, pResultCallBack: ( ret : number , content : string )=>void = null ) : boolean 
     {
         console.log( "onJoinClubDlgResult " + clubID );
         let msg = { } ;
@@ -241,16 +248,31 @@ export default class ClientPlayerClubs implements IClientPlayerDataComponent, IC
             let vError = [ "加入申请已经提交，请耐心等待管理员审批","您已经在该俱乐部里","您已经申请了，请勿重复申请，耐心等待管理员审批","俱乐部成员数量已达上限","玩家对象为空"] ;
             if ( vError.length <= ret )
             {
-                Utility.showTip("unknown error code = " + ret ) ;
+                if ( pResultCallBack == null )
+                {
+                    Utility.showTip("unknown error code = " + ret ) ;
+                }
+                else
+                {
+                    pResultCallBack(ret,"unknown error code = " + ret );
+                }
                 return true ;
             }
-            Utility.showTip( vError[ret] );
+
+            if ( pResultCallBack == null )
+            {
+                Utility.showTip( vError[ret] );
+            }
+            else
+            {
+                pResultCallBack(ret,vError[ret] ) ;
+            }
             return true ;
         } );
         return true ;
     }
 
-    reqCreateClub( msgContent : Object ) : boolean 
+    reqCreateClub( msgContent : Object, pResultCallBack: ( ret : number , content : string )=>void = null ) : boolean 
     {
         let self = this ;
         this.sendClubMsg(msgContent,eMsgType.MSG_CLUB_CREATE_CLUB,( msg : Object )=>{
@@ -264,11 +286,26 @@ export default class ClientPlayerClubs implements IClientPlayerDataComponent, IC
            {
                if ( vError.length > ret )
                {
-                   Utility.showTip(vError[ret]);
+                   if ( null == pResultCallBack )
+                   {
+                        Utility.showTip(vError[ret]);
+                   }
+                   else
+                   {
+                        pResultCallBack(ret,vError[ret] );
+                   }
+                   
                }
                else
                {
-                   Utility.showTip("error code = " + ret );
+                    if ( null == pResultCallBack )
+                    {
+                        Utility.showTip("error code = " + ret);
+                    }
+                    else
+                    {
+                        pResultCallBack(ret,"error code = " + ret );
+                    }
                }
            }
            return true ;
@@ -430,7 +467,7 @@ export default class ClientPlayerClubs implements IClientPlayerDataComponent, IC
         this.mCurClub.fetchCompData(type,isForce ) ;
     }
 
-    protected sendClubMsg( jsMsg : any , msgID : number, callBack? : IOneMsgCallback ) : boolean
+    sendClubMsg( jsMsg : any , msgID : number, callBack? : IOneMsgCallback ) : boolean
     {
         let selfUID = ClientApp.getInstance().getClientPlayerData().getSelfUID() ;
         return Network.getInstance().sendMsg( jsMsg, msgID, eMsgPort.ID_MSG_PORT_CLUB, selfUID ,callBack) ;

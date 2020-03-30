@@ -107,7 +107,7 @@ export class RecorderRoomEntry implements IRecorderRoom
                 {
                     for ( let v of js )
                     {
-                        let pItem = new RecorderSinglRoundEntry();
+                        let pItem = self.CreateRecorderDetailEntry(); 
                         pItem.parseData(v);
                         self.vSingleRoundRecorders.push(pItem);
                     }
@@ -117,6 +117,11 @@ export class RecorderRoomEntry implements IRecorderRoom
         };
         xhr.open("GET", url, true);
         xhr.send();
+    }
+
+    protected CreateRecorderDetailEntry() : RecorderSinglRoundEntry
+    {
+        return new RecorderSinglRoundEntry();
     }
 }
 
@@ -215,10 +220,15 @@ export default class RecorderData
                 this.nCacherMaxSerialNum = sieal ;
             }
 
-            let p = new RecorderRoomEntry();
+            let p = this.createRoomEnter();
             p.parseData(v);
             this.vRecorder.unshift(p);
         }
+    }
+
+    protected createRoomEnter() : RecorderRoomEntry 
+    {
+        return new RecorderRoomEntry();
     }
 }
 

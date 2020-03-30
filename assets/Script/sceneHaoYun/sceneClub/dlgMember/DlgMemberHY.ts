@@ -83,14 +83,21 @@ export default class DlgMemberHY extends DlgBase implements IAbsAdapter {
     showDlg( pfResult? : ( jsResult : Object ) => void, jsUserData? : any, pfOnClose? : ( pTargetDlg : DlgBase ) => void  )
     {
         super.showDlg(pfResult,jsUserData,pfOnClose);
+        if ( null != this.mData )
+        {
+            this.mData.leaveMembers();
+        }
+
         this.mData = jsUserData ;
 
         for ( let v of this.mPages )
         {
             v.setAdapter(this);
         }
+
+        let self = this ;
+        this.mData.reqMembersDatas(()=>{ self.refreshPage(); });
         
-        this.refreshPage();
     }
     // update (dt) {}
     onToggle( checkToggle : cc.Toggle )
@@ -222,9 +229,9 @@ export default class DlgMemberHY extends DlgBase implements IAbsAdapter {
         }
     }
 
-    callBackForApplyItem( applyUID : number , isAgree : boolean )
+    callBackForApplyItem( eventID : number , isAgree : boolean )
     {
-        this.mData.reqResponeApply(applyUID,isAgree,( ret : number , retContent : string )=>{
+        this.mData.reqResponeApply(eventID,isAgree,( ret : number , retContent : string )=>{
             if ( G_TEST == false )
             {
                 Prompt.promptText(retContent);
@@ -332,5 +339,11 @@ export default class DlgMemberHY extends DlgBase implements IAbsAdapter {
         }
         console.log( "inviting ...." );
         self.mInviteRightNowCD.lock();
+    }
+    
+    closeDlg()
+    {
+        this.mData.leaveMembers();
+        super.closeDlg();
     }
 }

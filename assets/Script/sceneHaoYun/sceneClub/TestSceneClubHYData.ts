@@ -1,6 +1,9 @@
-import ISceneClubHYData, { IDeskItemHYData, IClubListHYData, IClubListItemHYData, ICreateClubVerifyDataHY } from "./ISceneClubHYData";
+import ISceneClubHYData, { IDeskItemHYData, IClubListHYData, IClubListItemHYData, ICreateClubVerifyDataHY, IControlCenterDataHY, IDlgNoticeData } from "./ISceneClubHYData";
 import IDlgMemberDataHY from "./dlgMember/IDlgMemberDataHY";
 import TestDlgMemberDataHY from "./dlgMember/TestDlgMemberDataHY";
+import IOpts from "../../opts/IOpts";
+import TestDlgRecorderDataHY from "./dlgRecorder/TestDlgRecorderDataHY";
+import IDlgRecorderDataHY from "./dlgRecorder/IDlgRecorderDataHY";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -50,11 +53,83 @@ class TestClubListItemData implements IClubListItemHYData
     memberCnt : number ;
 }
 
+class TestControlCenterData implements IControlCenterDataHY
+{
+    clubName : string = "this is a test name";
+    isOpening : boolean = true;
+    isSelfCreater : boolean = false;
+    getWanFaList() : { idx : number , content : string }[] 
+    {
+        return [ { idx : 0 , content :"just a test wan fa " }
+        ,{ idx : 2 , content :"just a test wan fa 3" }
+        ,{ idx : 3 , content :"just a test wan fa 4" }
+        ,{ idx : 4 , content :"just a test wan fa 5" }
+        ,{ idx : 5 , content :"just a test wan fa 6" }
+        ,{ idx : 6 , content :"just a test wan fa 7" } ] ;
+    }
+
+    reqAddWanFa( opts : IOpts , pRet : ( ret : number , content : string )=>void) 
+    {
+        console.log( "do add wan fa " );
+        pRet( 0 , "ok operate");
+    }
+
+    reqDeleteWanFa( idx : number , pRet : ( ret : number , content : string )=>void )
+    {
+        console.log( "delter wan fa " );
+        pRet(0,"sdjfalsdg");
+    }
+
+    reqChangeName( newName : string , pRet : ( ret : number , content : string )=>void )
+    {
+        console.log( "change name " );
+        this.clubName = newName ;
+        pRet( 0 , "ok change name ");
+    }
+
+    reqSwitchState( pRet : ( ret : number , content : string )=>void ) 
+    {
+        console.log( "req switch club state" );
+        this.isOpening = !this.isOpening ;
+        pRet(0,"operate ok") ;
+    }
+
+    reqDismiss() : void 
+    {
+        console.log( "req do dismiss" );
+    }
+}
+
+class TestDlgNoticeData implements IDlgNoticeData
+{
+    isSelfMgr() : boolean 
+    {
+        return false ;
+    }
+    clubName : string = "this is club name" ;
+    clubNotice : string = "this is a notice" ;
+    reqModifyNotice( notice : string , pret : ( ret : number , content : string )=>void ) : void 
+    {
+        console.log( "reqModifyNotice = " + notice );
+    }
+}
+
 @ccclass
 export default class TestSceneClubHYData implements ISceneClubHYData , IClubListHYData , ICreateClubVerifyDataHY {
 
     nCurClubID : number = 100 ;
     vClubListItem : TestClubListItemData[] = [] ;
+
+    reqDatas( pRet : ()=>void ) : void 
+    {
+        pRet();
+    }
+
+    leaveScene() : void
+    {
+        
+    }
+
     constructor()
     {
         for ( let i = 0 ; i < 20 ; ++i )
@@ -108,9 +183,10 @@ export default class TestSceneClubHYData implements ISceneClubHYData , IClubList
         return new TestDlgMemberDataHY() ;
     }
 
-    reqJoinClub( clubID : string , pResultCallBack: ( ret : number , content : string )=>void ) : void
+    reqJoinClub( clubID : number , pResultCallBack: ( ret : number , content : string )=>void ) : void
     {
-        
+        console.log( "reqJoinClub" );
+        pResultCallBack(0,"asdljfok ok");
     }
 
     ///--- IClubListHYData
@@ -132,13 +208,14 @@ export default class TestSceneClubHYData implements ISceneClubHYData , IClubList
     // ICreateClubVerifyDataHY
     reqVerifyCode( phoneNum : string ) : void 
     {
-
+        console.log( "reqVerifyCode" );
 
     }
 
     reqDoCreate( phoneNum : string , code : string , clubName : string, ResultCallBack: ( ret : number , content : string )=>void ) : void
     {
-
+        console.log( "reqDoCreate" );
+        ResultCallBack( 0,"0" );
     }
 
     getCreateClubVerifyData() : ICreateClubVerifyDataHY
@@ -146,8 +223,29 @@ export default class TestSceneClubHYData implements ISceneClubHYData , IClubList
         return this ;
     }
     
+    isSelfClubMgr() : boolean
+    {
+        return true ;
+    }
 
+    reqExitClub() : void 
+    {
+        console.log( "req exit club" );
+    }
     
+    getControlCenterData() : IControlCenterDataHY 
+    {
+        return new TestControlCenterData() ;
+    }
 
+    getRecorderData() : IDlgRecorderDataHY
+    {
+        return new TestDlgRecorderDataHY();
+    }
+
+    getDlgNoticeData() : IDlgNoticeData 
+    {
+        return new TestDlgNoticeData();
+    }
 
 }

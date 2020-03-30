@@ -20,7 +20,7 @@ export class ClubMember implements IClubMemberDataItem
 {
     uid : number = 0 ;
     privliage : number = 0 ;
-    private _members : ClubDataMembers = null ;
+    protected _members : ClubDataMembers = null ;
     get canDowngrade() : boolean
     {
         let selfUID = ClientApp.getInstance().getClientPlayerData().getSelfUID();
@@ -117,7 +117,7 @@ export default class ClubDataMembers extends IClubDataComponent implements IClub
 
             let self = this ;
             vM.forEach( ( p : Object )=>{
-                let mem = new ClubMember();
+                let mem = self.createMemberItem();
                 mem.uid = p["uid"] ;
                 mem.privliage = p["privilige"] ;
                 self.vMembers.push(mem);
@@ -208,5 +208,10 @@ export default class ClubDataMembers extends IClubDataComponent implements IClub
         msg["playerUID"] = uid ;
         msg["privilige"] = privliage ;
         this.sendClubMsg( eMsgType.MSG_CLUB_UPDATE_PRIVILIGE , msg ) ;
+    }
+
+    protected createMemberItem() : ClubMember
+    {
+        return new ClubMember();
     }
 }

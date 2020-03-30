@@ -54,14 +54,14 @@ class MemberItemData implements IDlgMemberOptDataHY
 
 class applyItemData implements IApplyItemDataHY
 {
-    applyUID : number = 102;
+    eventID : number = 102;
     applyContent : string = "want to join you club";
 }
 
 class logItemData implements ILogItemDataHY
 {
     logContent : string = "some thing is ok yes";
-    time : string = "2020-1-1 20:12:22";
+    logTimeStr : string = "2020-1-1 20:12:22";
 }
 
 export default class TestDlgMemberDataHY implements IDlgMemberDataHY {
@@ -70,6 +70,16 @@ export default class TestDlgMemberDataHY implements IDlgMemberDataHY {
     vApplyItems : applyItemData[] = [] ;
 
     vLogItems : logItemData[] = [] ;
+
+    reqMembersDatas( pret : ()=>void ) : void 
+    {
+        pret();
+    }
+
+    leaveMembers() : void 
+    {
+
+    }
 
     getMemberCnt( isSeatchResult : boolean ) : number 
     {

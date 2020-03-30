@@ -8,6 +8,7 @@ import OptsSuZhou from "../../opts/OptsSuZhou";
 import ClientApp from "../../globalModule/ClientApp";
 import Network from "../../common/Network";
 import { SceneName } from "../../common/clientDefine";
+import OptsFactory from "../../opts/OptsFactory";
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -31,6 +32,7 @@ export class ClubRoomItem implements IClubRoomsDataItem
     playedRound : number = 0 ;
     totalRound : number = 0 ;
     isCircle : boolean = false ;
+    _opts : IOpts = null ;
     get seatCnt() : number
     {
         return this.jsmsgBrife["opts"]["seatCnt"];
@@ -38,9 +40,11 @@ export class ClubRoomItem implements IClubRoomsDataItem
 
     get opts() : IOpts
     {
-        let opts = new OptsSuZhou();
-        opts.parseOpts( this.jsmsgBrife["opts"] );
-        return opts ;
+        if ( this._opts == null )
+        {
+            this._opts = OptsFactory.createOpts(this.jsmsgBrife["opts"]);
+        }
+        return this._opts ;
     }
     
     jsmsgBrife : Object = null ;
@@ -90,7 +94,7 @@ export default class ClubDataRooms extends IClubDataComponent implements IClubRo
                     cc.error( "why have null elements" );
                     continue ;
                 }
-                let p = new ClubRoomItem();
+                let p = this.createRoomItemData();
                 p.nRoomID = v ;
                 this.vRooms.push(p);
             }
@@ -154,6 +158,11 @@ export default class ClubDataRooms extends IClubDataComponent implements IClubRo
             }
         }
         return null ;
+    }
+
+    protected createRoomItemData() : ClubRoomItem
+    {
+        return new ClubRoomItem();
     }
 
     // interface IClubRoomsData

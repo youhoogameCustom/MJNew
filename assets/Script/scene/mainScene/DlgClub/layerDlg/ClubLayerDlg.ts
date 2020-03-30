@@ -106,7 +106,7 @@ export default class ClubLayerDlg extends cc.Component implements IClubLayerDlg 
         let self = this ;
         if ( idx == 0 ) 
         {
-            this.mDlgJoin.showDlg( ( nJoinRoomID : string )=>{ this.mData.reqJoinClub( parseInt( nJoinRoomID ) ); } ) ;
+            this.mDlgJoin.showDlg( ( nJoinRoomID : string )=>{ this.mData.reqJoinClub( parseInt( nJoinRoomID ) ,null ); } ) ;
         }
         else
         {
@@ -125,7 +125,7 @@ export default class ClubLayerDlg extends cc.Component implements IClubLayerDlg 
     onDlgCreateClubOpts( msgCreateRoom : IOpts )
     {
         this.mJsCreateClubMsg["opts"] = msgCreateRoom.jsOpts;
-        this.mData.reqCreateClub(this.mJsCreateClubMsg);
+        this.mData.reqCreateClub(this.mJsCreateClubMsg,null);
     }
 
     onDlgSetting( idx : number )

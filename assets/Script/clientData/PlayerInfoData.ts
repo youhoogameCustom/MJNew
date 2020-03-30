@@ -78,4 +78,9 @@ export default class PlayerInfoData {
         }
         return this.playerBrifeDataMsg["addre"] ;
     }
+
+    get isOnline() : boolean 
+    {
+        return this.playerBrifeDataMsg["isOnline"] == 1;
+    }
 }

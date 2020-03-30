@@ -247,7 +247,7 @@ export default class ClubDataEvent extends IClubDataComponent implements IClubMe
                      self.nClientMaxEventID = eveID ;
                  }
 
-                 let p = new ClubEvent();
+                 let p = self.createEvent();
                  p.logEventType = type ;
                  p.time = eve["time"] ;
                  p.jsDetail = eve["detail"] ;
@@ -335,5 +335,10 @@ export default class ClubDataEvent extends IClubDataComponent implements IClubMe
         msg["clubID"] = this.clubID;
         this.sendClubMsg( eMsgType.MSG_CLUB_PROCESS_EVENT,msg ) ;
         return true ;
+    }
+
+    protected createEvent() : ClubEvent
+    {
+        return new ClubEvent();
     }
 }

@@ -10,6 +10,7 @@ import Network from "../../common/Network";
 import ClientPlayerClubs from "../ClientPlayerClubs";
 import ClientApp from "../../globalModule/ClientApp";
 import { IClubListDataItem } from "../../scene/mainScene/DlgClub/clubList/IClubListData";
+import { IOneMsgCallback } from "../../common/NetworkInterface";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,9 +23,9 @@ import { IClubListDataItem } from "../../scene/mainScene/DlgClub/clubList/IClubL
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 export default class ClubData implements IClubListDataItem {
     
-    private _ClubID : number = 0 ;
-    private _PlayerClubs : ClientPlayerClubs = null ;
-    private vClubDataComponents : { [ key : number] : IClubDataComponent } = {} ;
+    protected _ClubID : number = 0 ;
+    protected _PlayerClubs : ClientPlayerClubs = null ;
+    protected vClubDataComponents : { [ key : number] : IClubDataComponent } = {} ;
 
     init( clubID : number, clubs : ClientPlayerClubs )
     {
@@ -65,9 +66,9 @@ export default class ClubData implements IClubListDataItem {
         return this._ClubID ;
     }
 
-    sendMsg( jsMsg : Object , msgID : eMsgType, targetPort : eMsgPort , targetID : number )
+    sendMsg( jsMsg : Object , msgID : eMsgType, targetPort : eMsgPort , targetID : number,callBack? : IOneMsgCallback )
     {
-        Network.getInstance().sendMsg(jsMsg,msgID,targetPort,targetID) ;
+        Network.getInstance().sendMsg(jsMsg,msgID,targetPort,targetID,callBack) ;
     }
 
     onMsg( msgID : number , msgData : Object ) : boolean

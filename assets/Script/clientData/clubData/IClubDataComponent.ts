@@ -1,6 +1,7 @@
 import ClubData from "./ClubData";
 import { eMsgPort } from "../../common/MessageIdentifer";
 import ClientApp from "../../globalModule/ClientApp";
+import { IOneMsgCallback } from "../../common/NetworkInterface";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -62,6 +63,11 @@ export default abstract class IClubDataComponent  {
     {
         this._ClubData.sendMsg(msgData,msgID,eMsgPort.ID_MSG_PORT_CLUB,ClientApp.getInstance().getClientPlayerData().getSelfUID()) ;
     }
+
+    sendClubMsgWithCallBack( msgID : number , msgData : Object , callBack? : IOneMsgCallback )
+    {
+        this._ClubData.sendMsg(msgData,msgID,eMsgPort.ID_MSG_PORT_CLUB,ClientApp.getInstance().getClientPlayerData().getSelfUID(),callBack) ;
+    }  
 
     onDestroy()
     {

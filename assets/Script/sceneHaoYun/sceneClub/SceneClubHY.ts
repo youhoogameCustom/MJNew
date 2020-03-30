@@ -6,6 +6,8 @@ import ISceneClubHYData from "./ISceneClubHYData";
 import DeskItemHY, { IDeskItemHYDelegate } from "./DeskItemHY";
 import TestSceneClubHYData from "./TestSceneClubHYData";
 import Prompt from "../../globalModule/Prompt";
+import ClientApp from "../../globalModule/ClientApp";
+import SceneClubDataHY from "./data/SceneClubDataHY";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -57,20 +59,63 @@ export default class SceneClubHY extends cc.Component implements IAbsAdapter, ID
     @property(DlgBase)
     mDlgJoinClub : DlgBase = null ;
 
+    @property(cc.Node)
+    mBtnExitClub : cc.Node = null ;
 
-    mData : ISceneClubHYData = new TestSceneClubHYData() ;
+    @property(cc.Node)
+    mBtnControlCenter : cc.Node = null ;
+
+    @property(DlgBase)
+    mDlgControlCenter : DlgBase = null ;
+
+    @property(DlgBase)
+    mDlgRecorder : DlgBase = null ;
+
+    @property(DlgBase)
+    mDlgNotice : DlgBase = null ;
+
+
+    mData : ISceneClubHYData = null ;
     mCurSeatCntType : number = 0;
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
-
-    start () {
-        this.mDeskList.setAdapter(this);
-        this.refreshClub();
+    onLoad () 
+    {
+        if ( this.mData == null )
+        {
+            if ( G_TEST )
+            {
+                this.mData = new TestSceneClubHYData();
+            }
+            else
+            {
+                this.mData = ClientApp.getInstance().getClientPlayerData().getClubs() as SceneClubDataHY;
+            }
+        }
     }
 
-    refreshClub()
+    start () {
+        let self = this ;
+        this.mData.reqDatas(()=>{ 
+            self.mDeskList.setAdapter(self) ;
+            self.refreshClub();
+        } ) ;
+    }
+
+    onDestroy()
     {
+        this.mData.leaveScene();
+    }
+
+    protected refreshClub()
+    {
+        this.mClubEmptyRoot.active = this.mData.getCurClubID() == 0 ;
+        this.mClubContentRoot.active = !this.mClubEmptyRoot.active ;
+        if ( this.mClubEmptyRoot.active )
+        {
+            return ;
+        }
+
         let ownerID = this.mData.getCurClubOwnerUID();
         if ( 0 == ownerID )
         {
@@ -178,7 +223,7 @@ export default class SceneClubHY extends cc.Component implements IAbsAdapter, ID
         let self = this ;
         this.mDlgJoinClub.showDlg(( clubID : string )=>{
             console.log( "reqest join id = " + clubID );
-            self.mData.reqJoinClub(clubID,( ret : number , content : string )=>{
+            self.mData.reqJoinClub(parseInt(clubID),( ret : number , content : string )=>{
                 Prompt.promptText(content) ;
                 if ( ret == 0 )
                 {
@@ -186,5 +231,39 @@ export default class SceneClubHY extends cc.Component implements IAbsAdapter, ID
                 }
             } ) ;
         }) ;
+    }
+
+    onBtnSetting()
+    {
+        if ( this.mData == null )
+        {
+            return ;
+        }
+
+        this.mBtnControlCenter.active = !this.mBtnControlCenter.active && this.mData.isSelfClubMgr();
+        this.mBtnExitClub.active = !this.mBtnExitClub.active && ( this.mData.isSelfClubMgr() == false ) ;
+    }
+
+    onBtnExitClub()
+    {
+        this.mBtnExitClub.active = false ;
+        let data = this.mData ;
+        Prompt.promptDlg("您确定要退出俱乐部吗？退出后，需要重新申请通过后才能加入",false,( js : Object )=>{data.reqExitClub();} ) ;
+    }
+
+    onBtnContronlCenter()
+    {
+        this.mBtnControlCenter.active = false ;
+        this.mDlgControlCenter.showDlg(null,this.mData.getControlCenterData() ) ;
+    }
+
+    onBtnRecorder()
+    {
+        this.mDlgRecorder.showDlg(null,this.mData.getRecorderData() ) ;
+    }
+
+    onBtnNotice()
+    {
+        this.mDlgNotice.showDlg(null,this.mData.getDlgNoticeData()) ;
     }
 }

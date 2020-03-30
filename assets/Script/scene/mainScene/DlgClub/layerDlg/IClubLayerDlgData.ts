@@ -21,8 +21,8 @@ export default interface IClubLayerDlgData {
     getClubMessageData() : IClubMessageData ;
     getClubControlCenterData() : IClubControlCenterData ;
 
-    reqJoinClub( clubID : number ) : boolean ;
-    reqCreateClub( msgContent : Object ) : boolean ;
+    reqJoinClub( clubID : number,pResultCallBack: ( ret : number , content : string )=>void ) : boolean ;
+    reqCreateClub( msgContent : Object , pResultCallBack: ( ret : number , content : string )=>void  ) : boolean ;
     reqLeaveCurClub() : boolean ;
     reqUpdateNotice( newNotice : string ) : boolean ;
 }

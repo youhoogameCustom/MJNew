@@ -33,6 +33,6 @@ export default class LogItemHY extends cc.Component {
     refresh( itemData : ILogItemDataHY )
     {
         this.mContent.string = itemData.logContent ;
-        this.mTime.string = itemData.time ;
+        this.mTime.string = itemData.logTimeStr ;
     }
 }

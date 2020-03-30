@@ -257,10 +257,11 @@ export default class Network{
             }
             let isCapture = this.vMsgCallBack[idx][1](msg);
             this.vMsgCallBack.splice(idx,1);
-            if ( false == isCapture )
+            if ( isCapture )
             {
                 break ;
             }
+
         }
        //console.log("dispath msg id " + msg );
         /// dispatch event ;

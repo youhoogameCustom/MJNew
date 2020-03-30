@@ -35,18 +35,20 @@ export interface IDlgMemberOptDataHY extends IMemberItemDataHY
 
 export interface IApplyItemDataHY
 {
-    applyUID : number ;
+    eventID : number ;
     applyContent : string ;
 }
 
 export interface ILogItemDataHY
 {
     logContent : string ;
-    time : string ;
+    logTimeStr : string ;
 }
 
  export default interface IDlgMemberDataHY {
 
+    reqMembersDatas( pret : ()=>void ) : void ;
+    leaveMembers() : void ;
     getMemberCnt( isSeatchResult : boolean ) : number ;
     getMemberItemData( idx : number, isSeatchResult : boolean ) : IMemberItemDataHY ;
 
@@ -58,7 +60,7 @@ export interface ILogItemDataHY
 
     reqExitClub() : void ;
     reqInvite( uid : number , pRet : ( ret : number , retContent : string )=>void ) : void ;
-    reqResponeApply( uid : number , isAgree : boolean ,pRet : ( ret : number , retContent : string )=>void ) ;
+    reqResponeApply( eventID : number , isAgree : boolean ,pRet : ( ret : number , retContent : string )=>void ) ;
     reqSearch( uid : number , pRet : ( ret : number , retContent : string )=>void );
 
     getOnlineCntDesc() : string ;

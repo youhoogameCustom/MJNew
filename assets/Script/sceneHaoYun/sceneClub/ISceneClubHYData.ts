@@ -1,4 +1,6 @@
 import IDlgMemberDataHY from "./dlgMember/IDlgMemberDataHY";
+import IOpts from "../../opts/IOpts";
+import IDlgRecorderDataHY from "./dlgRecorder/IDlgRecorderDataHY";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -40,8 +42,39 @@ export interface ICreateClubVerifyDataHY
     reqDoCreate( phoneNum : string , code : string , clubName : string, pResultCallBack: ( ret : number , content : string )=>void ) : void;
 }
  
+
+export interface IControlCenterDataHY
+{
+    clubName : string ;
+    isOpening : boolean ;
+    isSelfCreater : boolean ;
+    getWanFaList() : { idx : number , content : string }[] ;
+    reqAddWanFa( opts : IOpts , pRet : ( ret : number , content : string )=>void) ;
+    reqDeleteWanFa( idx : number , pRet : ( ret : number , content : string )=>void );
+    reqChangeName( newName : string , pRet : ( ret : number , content : string )=>void );
+    reqSwitchState( pRet : ( ret : number , content : string )=>void ) ;
+    reqDismiss() : void ;
+}
+
+export interface IDlgNoticeData
+{
+    isSelfMgr() : boolean ;
+    clubName : string ;
+    clubNotice : string ;
+    reqModifyNotice( notice : string , pret : ( ret : number , content : string )=>void ) : void ;
+}
+
+export class ClubEventHY
+{
+    static Event_AddClub : string = "Event_AddClub";
+    static Event_RemoveClub : string = "Event_RemoveClub" ;
+    static Event_UpdateNotice : string = "Event_UpdateNotice" ;
+}
+
 export default interface ISceneClubHYData 
 {
+    reqDatas( pRet : ()=>void ) : void ;
+    leaveScene() : void;
     getCurClubOwnerUID() : number ;
     getCurClubNotice() : string ;
     getCurClubID() : number ;
@@ -56,5 +89,14 @@ export default interface ISceneClubHYData
     
     getCreateClubVerifyData() : ICreateClubVerifyDataHY ;
 
-    reqJoinClub( clubID : string , pResultCallBack: ( ret : number , content : string )=>void ) : void ;
+    reqJoinClub( clubID : number , pResultCallBack: ( ret : number , content : string )=>void ) : void ;
+
+    isSelfClubMgr() : boolean ;
+    reqExitClub() : void ;
+
+    getControlCenterData() : IControlCenterDataHY ;
+
+    getRecorderData() : IDlgRecorderDataHY;
+
+    getDlgNoticeData() : IDlgNoticeData ;
 }

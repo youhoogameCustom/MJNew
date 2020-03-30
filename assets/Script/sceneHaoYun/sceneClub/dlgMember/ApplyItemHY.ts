@@ -20,7 +20,7 @@ export default class ApplyItemHY extends cc.Component {
 
     mfCallBack : ( applyUID : number , isAgree : boolean )=>void = null ;
 
-    mApplyID : number = 0 ;
+    mEventID : number = 0 ;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -30,10 +30,10 @@ export default class ApplyItemHY extends cc.Component {
     }
 
     // update (dt) {}
-    refresh( itemData : IApplyItemDataHY, pcallBack : ( applyUID : number , isAgree : boolean )=>void )
+    refresh( itemData : IApplyItemDataHY, pcallBack : ( mEventID : number , isAgree : boolean )=>void )
     {
         this.mContent.string = itemData.applyContent ;
-        this.mApplyID = itemData.applyUID ;
+        this.mEventID = itemData.eventID ;
         this.mfCallBack = pcallBack ;
     }
 
@@ -41,7 +41,7 @@ export default class ApplyItemHY extends cc.Component {
     {
         if ( null != this.mfCallBack )
         {
-            this.mfCallBack(this.mApplyID,true );
+            this.mfCallBack(this.mEventID,true );
         }
     }
 
@@ -49,7 +49,7 @@ export default class ApplyItemHY extends cc.Component {
     {
         if ( null != this.mfCallBack )
         {
-            this.mfCallBack(this.mApplyID,false );
+            this.mfCallBack(this.mEventID,false );
         }
     }
 }

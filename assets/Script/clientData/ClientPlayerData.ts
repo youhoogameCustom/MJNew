@@ -3,6 +3,7 @@ import Network from "../common/Network";
 import ClientPlayerBaseData from "./ClientPlayerBaseData";
 import ClientPlayerClubs from "./ClientPlayerClubs";
 import RecorderData from "./RecorderData";
+import ClubDataRecorderHY from "../sceneHaoYun/sceneClub/data/ClubDataRecorderHY";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,7 +25,7 @@ export default class ClientPlayerData {
 
     private _baseData : ClientPlayerBaseData = null ;
     private _Clubs : ClientPlayerClubs = null ;
-    private _Recorders : RecorderData = null ;
+    private _Recorders : RecorderData = null ; 
  
     init()
     {
@@ -33,6 +34,8 @@ export default class ClientPlayerData {
             let msg : Object = event.detail[Network.MSG_DATA] ;
             this.onMsg(nMsgID,msg);
         }) ;
+
+        let p = new ClubDataRecorderHY();
     }
 
     onMsg( msgID : eMsgType , msg : Object )
@@ -47,10 +50,10 @@ export default class ClientPlayerData {
                 }
                 this._baseData.initByMsg(msg);
 
-                if ( this._Clubs == null )
+                if ( this._Clubs == null ) 
                 {
                     this._Clubs = new ClientPlayerClubs();
-                    this._Clubs.init(this) ;
+                    this._Clubs.init(this) ;  
                 }
                 
                 if ( this._Recorders == null )
