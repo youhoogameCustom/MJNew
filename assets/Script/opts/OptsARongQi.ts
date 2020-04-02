@@ -1,4 +1,5 @@
-import IOpts from "../../../opts/IOpts";
+import OptsDanDong from "./OptsDanDong";
+import { eGameType } from "../common/clientDefine";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -11,8 +12,23 @@ import IOpts from "../../../opts/IOpts";
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const {ccclass, property} = cc._decorator;
+
 @ccclass
-export abstract class ILayerOpts extends cc.Component
-{
-    abstract getOpts() : IOpts ;
+export default class OptsARongQi extends OptsDanDong {
+
+    constructor()
+    {
+        super();
+        this.gameType = eGameType.eGame_MQMJ ;
+    }
+
+    get isPao() : boolean
+    {
+        return this.jsOpts["pao"] == 1 ;
+    }
+
+    set isPao( is : boolean )
+    {
+        this.jsOpts["pao"] = is ? 1 : 0 ;
+    } 
 }

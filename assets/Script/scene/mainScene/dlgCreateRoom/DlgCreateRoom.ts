@@ -1,10 +1,5 @@
 import DlgBase from "../../../common/DlgBase";
-import LayerOptsDanDong from "./LayerOptsDanDong";
 import { ILayerOpts } from "./ILayerOpts";
-import LayerOptsSuZhou from "./LayerOptsSuZhou";
-import LayerOptsSuZhouBaiDa from "./LayerOptsSuZhouBaiDa";
-import LayerOptsNanJing from "./LayerOptsNanJing";
-
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -17,88 +12,42 @@ import LayerOptsNanJing from "./LayerOptsNanJing";
 
 const {ccclass, property} = cc._decorator;
 
-interface togglePair
-{
-    toggle : cc.Toggle ;
-    layerOpts : ILayerOpts ;
-} ;
-
 @ccclass
 export default class DlgCreateRoom extends DlgBase {
-
-    vTogglePairs : togglePair[] = [] ;
-
-   // @property( [cc.Component.EventHandler ] )
-    //onDlgResult : cc.Component.EventHandler[] = [] ; // ( opts : IOpts )
     
-    @property(cc.Toggle)
-    mToggleDanDong : cc.Toggle = null;
+    @property( [ILayerOpts] )
+    mLayerOptsForGames : ILayerOpts[] = [] ;
 
-    @property(LayerOptsDanDong)
-    mLayerOptsDanDong : LayerOptsDanDong = null ;
-
-    // su zhou 
-    @property(cc.Toggle)
-    mToggleSuZhou : cc.Toggle = null;
-
-    @property(LayerOptsSuZhou)
-    mLayerOptsSuZhou : LayerOptsSuZhou = null ;
+    @property([cc.Toggle])
+    mToggleGames : cc.Toggle[] = [];  // idx must corropsone with mLayerOptsForGames 's idx ;
 
 
-    // su zhou bai da 
-    @property(cc.Toggle)
-    mToggleSuZhouBaiDa : cc.Toggle = null;
-
-    @property(LayerOptsSuZhouBaiDa)
-    mLayerOptsSuZhouBaiDa : LayerOptsSuZhouBaiDa = null ;
-
-    // nan jing 
-    @property(cc.Toggle)
-    mToggleNanJing : cc.Toggle = null;
-
-    @property(LayerOptsNanJing)
-    mLayerOptsNanJing : LayerOptsNanJing = null ;
 
     // LIFE-CYCLE CALLBACKS:
-
-    onLoad ()
-    {   
-        super.onLoad();
-        // setup Pairs ; 
-        this.vTogglePairs.push({ toggle : this.mToggleDanDong, layerOpts : this.mLayerOptsDanDong });
-        this.vTogglePairs.push({ toggle : this.mToggleSuZhou, layerOpts : this.mLayerOptsSuZhou }) ;
-        this.vTogglePairs.push({ toggle : this.mToggleSuZhouBaiDa, layerOpts : this.mLayerOptsSuZhouBaiDa }) ;
-        this.vTogglePairs.push({ toggle : this.mToggleNanJing, layerOpts : this.mLayerOptsNanJing }) ;
+    start () {
         // init state;
         this.onSelectGame();
     }
 
-    start () {
-        
-    }
-
     onSelectGame()
     {
-        for ( let pair of this.vTogglePairs )
+        for ( let idx = 0 ;  idx < this.mToggleGames.length ; ++idx )
         {
-            pair.layerOpts.node.active = pair.toggle.isChecked;
+            this.mLayerOptsForGames[idx].node.active = this.mToggleGames[idx].isChecked;
         }
     }
 
     onBtnDoCreate()
     {
-        for ( let pair of this.vTogglePairs )
+        for ( let idx = 0 ;  idx < this.mToggleGames.length ; ++idx )
         {
-            if ( pair.toggle.isChecked )
+            if ( this.mToggleGames[idx].isChecked && this.pFuncResult != null )
             {
-                //cc.Component.EventHandler.emitEvents( this.onDlgResult,pair.layerOpts.getOpts() ) ;
-                if ( this.pFuncResult != null )
-                {
-                    this.pFuncResult( pair.layerOpts.getOpts() ) ;
-                }
+                this.pFuncResult( this.mLayerOptsForGames[idx].getOpts() ) ;
                 break ;
             }
         }
+
         this.closeDlg();   
     }
 

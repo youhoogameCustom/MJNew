@@ -1,0 +1,7 @@
+{
+  "ver": "1.0.0",
+  "uuid": "737f702b-0a0a-4d6b-b591-75f74508a861",
+  "atlasJson": "{\"width\":1024,\"imagePath\":\"renwudonghua_tex.png\",\"height\":512,\"name\":\"renwudonghua\",\"SubTexture\":[{\"width\":120,\"y\":183,\"height\":216,\"name\":\"hair\",\"x\":296},{\"width\":293,\"y\":1,\"height\":507,\"name\":\"body\",\"x\":1},{\"width\":168,\"y\":1,\"height\":180,\"name\":\"hand2\",\"x\":296},{\"width\":259,\"y\":401,\"height\":75,\"name\":\"hand\",\"x\":296}]}",
+  "texture": "7321707b-14c9-44c6-b17c-deab13615994",
+  "subMetas": {}
+}

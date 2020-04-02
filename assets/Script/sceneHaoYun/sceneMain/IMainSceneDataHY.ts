@@ -1,5 +1,3 @@
-import IOpts from "../../../opts/IOpts";
-
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -10,9 +8,12 @@ import IOpts from "../../../opts/IOpts";
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
-@ccclass
-export abstract class ILayerOpts extends cc.Component
-{
-    abstract getOpts() : IOpts ;
+
+export default interface IMainSceneDataHY {
+    selfUID : number ;
+    diamondSelf : number ;
+    notice : string ;
+    getRank3() : number[] ;
+    reqData( pret : ()=>void ) : void ;
+ 
 }

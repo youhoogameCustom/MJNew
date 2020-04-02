@@ -39,12 +39,12 @@ export default class OptsDanDong extends IOpts {
         this.jsOpts["dpOnePay"] = value ? 1 : 0;
     }
 
-    get limitFen() : number
+    get guangFen() : number
     {
         return this.jsOpts["guang"] ;
     }
 
-    set limitFen( value : number )
+    set guangFen( value : number )
     {
         this.jsOpts["guang"] = value ;
     }
@@ -71,9 +71,9 @@ export default class OptsDanDong extends IOpts {
             str = this.seatCnt == 4 ? "[三家炮]" : "[两家炮]" ;
         }
 
-        if ( this.limitFen > 0 )
+        if ( this.guangFen > 0 )
         {
-            str = str + " [上限" + this.limitFen + "分]" ;
+            str = str + " [上限" + this.guangFen + "分]" ;
         }
         return str ;
     }

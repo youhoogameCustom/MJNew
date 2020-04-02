@@ -1,9 +1,8 @@
 import { ILayerOpts } from "./ILayerOpts";
-import IOpts from "../../../opts/IOpts";
-import OptsDanDong from "../../../opts/OptsDanDong";
-import { ePayRoomCardType } from "../../../common/clientDefine";
-import Prompt from "../../../globalModule/Prompt";
 import * as _ from "lodash"
+import OptsShiSiLuo from "../../../opts/OptsShiSiLuo";
+import IOpts from "../../../opts/IOpts";
+import { ePayRoomCardType } from "../../../common/clientDefine";
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -17,8 +16,7 @@ import * as _ from "lodash"
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class LayerOptsDanDong extends ILayerOpts {
-
+export default class LayerOptsShiSiLuo extends ILayerOpts {
     @property([cc.Toggle])
     mRound : cc.Toggle[] = [] ;
 
@@ -32,22 +30,16 @@ export default class LayerOptsDanDong extends ILayerOpts {
     mOneDianPao : cc.Toggle = null ;
 
     @property(cc.Toggle)
-    mGuang : cc.Toggle = null ;
-
-    @property( [cc.Toggle ] )
-    mFengLimit : cc.Toggle[] = [] ;
-
-    @property( cc.Toggle )
-    mRandSeat : cc.Toggle = null ;
+    mCaiGang : cc.Toggle = null; 
 
     @property(cc.Toggle)
-    mIPAndGPS : cc.Toggle = null ;
+    mJiaHuShouBaYi : cc.Toggle = null ;
 
     @property(cc.Toggle)
-    mForceGPS : cc.Toggle = null ;
+    mAvoidCheat : cc.Toggle = null ;
 
-   // @property(cc.Label)
-    //mAAPayDesc : cc.Label = null ;
+    @property(cc.Toggle)
+    mHunPiao : cc.Toggle = null ;
 
     @property(cc.Label)
     mMultiDianPaoDesc : cc.Label = null ;
@@ -56,10 +48,10 @@ export default class LayerOptsDanDong extends ILayerOpts {
 
     // onLoad () {}
 
-    mOpts : OptsDanDong = null;
+    mOpts : OptsShiSiLuo = new OptsShiSiLuo();
 
     start () {
-        this.mOpts = new OptsDanDong();
+
     }
 
     onToggleSeat( seat : cc.Toggle )
@@ -91,32 +83,6 @@ export default class LayerOptsDanDong extends ILayerOpts {
         return 4 ;
     }
 
-    onToggleGuang( guang : cc.Toggle )
-    {
-        if ( guang.isChecked )
-        {
-            for ( let item of this.mFengLimit )
-            {
-                if ( item.isChecked )
-                {
-                    return ;
-                }
-            }
-
-            this.mFengLimit[0].isChecked = true ;
-        }
-        else
-        {
-            for ( let item of this.mFengLimit )
-            {
-                if ( item.isChecked )
-                {
-                    item.isChecked = false ;
-                    return ;
-                }
-            }
-        }
-    }
 
     getOpts() : IOpts
     {
@@ -174,51 +140,22 @@ export default class LayerOptsDanDong extends ILayerOpts {
         // wan fa 
         this.mOpts.isOnePlayerDianPao = this.mOneDianPao.isChecked ;
 
-        // limit fen
-        this.mOpts.guangFen = 0 ; 
-        if ( this.mGuang.isChecked )
-        {
-            let vFen = [ 30,50,70,100] ;
-            if ( vFen.length != this.mFengLimit.length )
-            {
-                cc.error( "mFengLimit array is the same length" );
-                return false ;
-            }
-            
-            this.mFengLimit.every( ( t : cc.Toggle , idx : number )=>{
-                if ( t.isChecked )
-                {
-                    this.mOpts.guangFen = vFen[idx] ;
-                    return false ;
-                }
-                return false ;
-            } );
-
-            if ( this.mOpts.guangFen == 0 )
-            {
-                Prompt.promptDlg( "请选择分数");
-                return false ;
-            }
-        }
-
         // rand seat ;
-        if ( this.mRandSeat != null )
-        {
-            this.mOpts.isRandSeat = this.mRandSeat.isChecked ;
-        }
+        //this.mOpts.isRandSeat = this.mRandSeat.isChecked ;
         
         // ip and gps 
-        if ( this.mIPAndGPS != null )
-        {
-            this.mOpts.isAvoidCheat = this.mIPAndGPS.isChecked ;
-            this.mOpts.isForceGPS = false ;
-            if ( this.mIPAndGPS.isChecked && this.mForceGPS != null )
-            {
-                this.mOpts.isForceGPS = this.mForceGPS.isChecked ;
-            }
-        }
+        // this.mOpts.isAvoidCheat = this.mIPAndGPS.isChecked ;
+        // this.mOpts.isForceGPS = false ;
+        // if ( this.mIPAndGPS.isChecked )
+        // {
+        //     this.mOpts.isForceGPS = this.mForceGPS.isChecked ;
+        // }
 
+        this.mOpts.isCaiGang = this.mCaiGang.isChecked;
+        this.mOpts.isJiaHuShouBaYi = this.mJiaHuShouBaYi.isChecked ;
+        this.mOpts.isAvoidCheat = this.mAvoidCheat.isChecked ;
+        this.mOpts.isHunPiao = this.mHunPiao.isChecked ;
         return true ;
     }
-    // update (dt) {}
+ 
 }
