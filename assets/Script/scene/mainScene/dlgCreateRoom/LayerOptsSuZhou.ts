@@ -1,8 +1,7 @@
 import { ILayerOpts } from "./ILayerOpts";
 import OptsSuZhou from "../../../opts/OptsSuZhou";
 import IOpts from "../../../opts/IOpts";
-import { ePayRoomCardType } from "../../../common/clientDefine";
-
+import * as _ from "lodash"
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -17,12 +16,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class LayerOptsSuZhou extends ILayerOpts {
-
-    @property([cc.Toggle])
-    mRound : cc.Toggle[] = [] ;
-
-    @property([cc.Toggle])
-    payTypes : cc.Toggle[] = [] ;
 
     @property(cc.Toggle)
     mMoChong34 : cc.Toggle = null ;
@@ -55,42 +48,10 @@ export default class LayerOptsSuZhou extends ILayerOpts {
     protected buildOpts() : boolean
     {
         // round
-        let self = this ; 
-        let vRound = [4,8,16] ;
-        if ( vRound.length != this.mRound.length )
-        {
-            cc.error( "round array is the same length" );
-            return false ;
-        }
-
-        this.mRound.every( ( t : cc.Toggle, idx : number )=>
-        { 
-            if ( t.isChecked )
-            { 
-                self.mOpts.roundCnt = vRound[idx] ;
-                return false ;
-            } 
-        return true ;
-        } );
-
+        this.mOpts.roundCnt = this.getRoundCnt();
         // pay type ;
-       let vPayType = [ ePayRoomCardType.ePayType_RoomOwner,ePayRoomCardType.ePayType_AA ] ;
-       if ( vPayType.length != this.payTypes.length )
-       {
-           cc.error( "payTypes array is the same length" );
-           return false ;
-       }
-
-       this.payTypes.every(
-        ( t : cc.Toggle, idx : number )=>
-        {
-            if ( t.isChecked )
-            {
-                this.mOpts.payType = vPayType[idx] ;
-                return false ;
-            }
-            return true ;
-        });
+        this.mOpts.payType = this.getPayType();
+        this.mOpts.seatCnt = this.getSeatCnt();
         
         // wan fa 
         this.mOpts.ruleMode = this.mMoChong34.isChecked ? 2 :  1 ;
@@ -98,6 +59,18 @@ export default class LayerOptsSuZhou extends ILayerOpts {
         this.mOpts.isHaoQi = this.mHaoQi.isChecked ;
         this.mOpts.isDiLing = this.mDiLing.isChecked ;
         return true ;
+    }
+
+    protected getRoundCnt() : number
+    {
+        let idx = _.findIndex(this.mRound, ( c : cc.Toggle )=>{ return c.isChecked ;} );
+        switch ( idx )
+        {
+            case 0 : return 4 ;
+            case 1 : return 8 ;
+            case 2 : return 16 ;
+        }
+        return 8 ;
     }
 
     // update (dt) {}

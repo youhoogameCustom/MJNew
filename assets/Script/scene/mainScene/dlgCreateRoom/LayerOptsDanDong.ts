@@ -1,7 +1,6 @@
 import { ILayerOpts } from "./ILayerOpts";
 import IOpts from "../../../opts/IOpts";
 import OptsDanDong from "../../../opts/OptsDanDong";
-import { ePayRoomCardType } from "../../../common/clientDefine";
 import Prompt from "../../../globalModule/Prompt";
 import * as _ from "lodash"
 // Learn TypeScript:
@@ -19,15 +18,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class LayerOptsDanDong extends ILayerOpts {
 
-    @property([cc.Toggle])
-    mRound : cc.Toggle[] = [] ;
-
-    @property([cc.Toggle])
-    mSeatCnt : cc.Toggle[] = [] ;
-
-    @property([cc.Toggle])
-    payTypes : cc.Toggle[] = [] ;
-    
     @property(cc.Toggle)
     mOneDianPao : cc.Toggle = null ;
 
@@ -79,18 +69,6 @@ export default class LayerOptsDanDong extends ILayerOpts {
          
     }
 
-    getSeatCnt()
-    {
-        let idx = _.findIndex(this.mSeatCnt, ( c : cc.Toggle )=>{ return c.isChecked ;} );
-        switch ( idx )
-        {
-            case 0 : return 4 ;
-            case 1 : return 3 ;
-            case 2 : return 2 ;
-        }
-        return 4 ;
-    }
-
     onToggleGuang( guang : cc.Toggle )
     {
         if ( guang.isChecked )
@@ -129,48 +107,13 @@ export default class LayerOptsDanDong extends ILayerOpts {
 
     protected buildOpts() : boolean
     {
-        let self = this ;
-
         // round 
-        let vRound = [8,16] ;
-        if ( vRound.length != this.mRound.length )
-        {
-            cc.error( "round array is the same length" );
-            return false ;
-        }
-
-        this.mRound.every( ( t : cc.Toggle, idx : number )=>
-        { 
-            if ( t.isChecked )
-            { 
-                self.mOpts.roundCnt = vRound[idx] ;
-                return false ;
-            } 
-        return true ;
-       } );
-
+        this.mOpts.roundCnt = this.getRoundCnt();
        // seat ;
        this.mOpts.seatCnt = this.getSeatCnt() ;
-
        // pay type ;
-       let vPayType = [ ePayRoomCardType.ePayType_RoomOwner,ePayRoomCardType.ePayType_AA ] ;
-       if ( vPayType.length != this.payTypes.length )
-       {
-           cc.error( "payTypes array is the same length" );
-           return false ;
-       }
-
-       this.payTypes.every(
-        ( t : cc.Toggle, idx : number )=>
-        {
-            if ( t.isChecked )
-            {
-                this.mOpts.payType = vPayType[idx] ;
-                return false ;
-            }
-            return true ;
-        });
-
+       this.mOpts.payType = this.getPayType();
+    
         // wan fa 
         this.mOpts.isOnePlayerDianPao = this.mOneDianPao.isChecked ;
 

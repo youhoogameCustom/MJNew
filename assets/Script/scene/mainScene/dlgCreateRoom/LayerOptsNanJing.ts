@@ -1,7 +1,7 @@
 import { ILayerOpts } from "./ILayerOpts";
 import IOpts from "../../../opts/IOpts";
 import OptsNanJing from "../../../opts/OptsNanJing";
-import { ePayRoomCardType } from "../../../common/clientDefine";
+import * as _ from "lodash"
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -17,12 +17,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class LayerOptsNanJing extends ILayerOpts {
-
-    @property([cc.Toggle])
-    mRound : cc.Toggle[] = [] ;
-
-    @property([cc.Toggle])
-    payTypes : cc.Toggle[] = [] ;
 
     mOpts : OptsNanJing = new OptsNanJing();
 
@@ -41,43 +35,24 @@ export default class LayerOptsNanJing extends ILayerOpts {
 
     protected buildOpts() : boolean
     {
-        // round
-        let self = this ; 
-        let vRound = [4,8,16] ;
-        if ( vRound.length != this.mRound.length )
+        // round 
+        this.mOpts.roundCnt = this.getRoundCnt();
+       // seat ;
+       this.mOpts.seatCnt = this.getSeatCnt() ;
+       // pay type ;
+       this.mOpts.payType = this.getPayType();
+        return true ;
+    }
+
+    protected getRoundCnt() : number
+    {
+        let idx = _.findIndex(this.mRound, ( c : cc.Toggle )=>{ return c.isChecked ;} );
+        switch ( idx )
         {
-            cc.error( "round array is the same length" );
-            return false ;
+            case 0 : return 4 ;
+            case 1 : return 8 ;
+            case 2 : return 16 ;
         }
-
-        this.mRound.every( ( t : cc.Toggle, idx : number )=>
-        { 
-            if ( t.isChecked )
-            { 
-                self.mOpts.roundCnt = vRound[idx] ;
-                return false ;
-            } 
-        return true ;
-        } );
-
-        // pay type ;
-       let vPayType = [ ePayRoomCardType.ePayType_RoomOwner,ePayRoomCardType.ePayType_AA ] ;
-       if ( vPayType.length != this.payTypes.length )
-       {
-           cc.error( "payTypes array is the same length" );
-           return false ;
-       }
-
-       this.payTypes.every(
-        ( t : cc.Toggle, idx : number )=>
-        {
-            if ( t.isChecked )
-            {
-                this.mOpts.payType = vPayType[idx] ;
-                return false ;
-            }
-            return true ;
-        });
-        return true ;
+        return 8 ;
     }
 }
