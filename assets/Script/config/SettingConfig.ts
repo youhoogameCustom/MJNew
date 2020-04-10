@@ -108,6 +108,37 @@ export default class SettingConfig implements IConfig {
          return v  ;
     }
 
+    set isSingleClickChuPai( v : boolean )
+    {
+        this.jsConfigData["_isSingleClickChuPai"] = v ? 1 : 0;
+    }
+
+    get isSingleClickChuPai() : boolean
+    {
+        let v = this.jsConfigData["_isSingleClickChuPai"];
+        if ( v == null )
+        {
+            return false ;
+        }
+        
+        return v == 1  ;
+    }
+
+    set isAvoidDaoJu( v : boolean )
+    {
+        this.jsConfigData["_isAvoidDaoJu"] = v ? 1 : 0;
+    }
+
+    get isAvoidDaoJu() : boolean
+    {
+        let v = this.jsConfigData["_isAvoidDaoJu"];
+        if ( v == null )
+        {
+            return false ;
+        }
+        
+        return v == 1  ;
+    }
 
     init()
     {

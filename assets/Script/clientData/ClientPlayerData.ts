@@ -60,6 +60,10 @@ export default class ClientPlayerData {
                 let pEvent = new cc.Event.EventCustom(ClientPlayerData.EVENT_RECIEVED_BASE_DATA,true) ;
                 pEvent.detail = this._baseData ;
                 cc.systemEvent.dispatchEvent(pEvent);
+
+                pEvent = new cc.Event.EventCustom(ClientPlayerData.EVENT_REFRESH_MONEY,true) ;
+                pEvent.detail = this._baseData ;
+                cc.systemEvent.dispatchEvent(pEvent);
             }
             break ;
             case eMsgType.MSG_PLAYER_REFRESH_MONEY:

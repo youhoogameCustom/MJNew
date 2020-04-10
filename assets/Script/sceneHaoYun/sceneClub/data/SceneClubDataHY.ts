@@ -12,6 +12,7 @@ import ClientApp from "../../../globalModule/ClientApp";
 import * as _ from "lodash"
 import { eClubDataComponent } from "../../../clientData/clubData/ClubDefine";
 import IClubDataComponent from "../../../clientData/clubData/IClubDataComponent";
+import Utility from "../../../globalModule/Utility";
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -215,7 +216,7 @@ export default class SceneClubDataHY extends ClientPlayerClubs implements IScene
             return null ;
         }
 
-        let recorder = this.mCurClub.getClubRecorder() as ClubDataRecorderHY;
+        let recorder = ( this.mCurClub.getClubRecorder() as IClubDataComponent ) as ClubDataRecorderHY;
         return recorder;
     }
 
@@ -244,20 +245,7 @@ export default class SceneClubDataHY extends ClientPlayerClubs implements IScene
     reqVerifyCode( phoneNum : string ) : void 
     {
         // do send http request to featch code ;
-        let xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)) {
-                let response = xhr.responseText;
-                let ret : Object = JSON.parse(response);
-                if ( ret["status"] == "fail")
-                {
-                    Prompt.promptText(ret["message"]);
-                }
-            }
-        };
-        let url = "http://cf2.youhoox.com/?ct=club&ac=send_code&mobile=" + phoneNum ;
-        xhr.open("GET", url, true);
-        xhr.send();
+        Utility.requestPhoneVerifyCode(phoneNum) ;
     }
 
     reqDoCreate( phoneNum : string , code : string , clubName : string, pResultCallBack: ( ret : number , content : string )=>void ) : void
@@ -272,26 +260,13 @@ export default class SceneClubDataHY extends ClientPlayerClubs implements IScene
 
         // do check code 
         let self = this ;
-        let xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)) {
-                let response = xhr.responseText;
-                console.log(response);
-                let ret : Object = JSON.parse(response);
-                if ( ret["status"] != "fail")
-                {
-                    let js = {} ;
-                    js["name"] = clubName ;
-                    self.reqCreateClub(js,pResultCallBack) ;
-                }
-                else
-                {
-                    pResultCallBack(-1,"手机号验证失败" );
-                }
-            }
-        };
-        let url = "http://cf2.youhoox.com/?ct=club&ac=check_code&mobile=" + phoneNum + "&code=" + code;
-        xhr.open("GET", url, true);
-        xhr.send();
+        Utility.checkPhoneVerifyCode(phoneNum,code).then( ()=>{
+            let js = {} ;
+            js["name"] = clubName ;
+            self.reqCreateClub(js,pResultCallBack) ;
+        }
+        ,()=>{
+            pResultCallBack(-1,"手机号验证失败" );
+        } ) ;
     }
 }

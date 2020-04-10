@@ -2,6 +2,10 @@ import PlayerInfoItem from "../../commonItem/PlayerInfoItem";
 import LedLabel from "../../commonItem/ledLabel";
 import DlgBase from "../../common/DlgBase";
 import IMianSceneDataHY from "./IMainSceneDataHY"
+import Prompt from "../../globalModule/Prompt";
+import IOpts from "../../opts/IOpts";
+import { SceneName } from "../../common/clientDefine";
+import MainSceneDataHY from "./data/MainSceneDataHY";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -61,9 +65,10 @@ export default class MainScene extends cc.Component {
     mDlgBindPhone : DlgBase = null ;
 
     @property(DlgBase)
-    mDlgAddDiamond : DlgBase = null ;
+    mDlgBindInviteCode : DlgBase = null ;
 
-    mData : IMianSceneDataHY = null ;
+    @property(MainSceneDataHY)
+    mData : MainSceneDataHY = null ;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -103,72 +108,111 @@ export default class MainScene extends cc.Component {
 
     onBtnAddDiamond()
     {
-
+        let data = this.mData.getShopExchangeData();
+        data.isDefaultExchangePage = false ;
+        this.mDlgExchange.showDlg(null,data ) ;
     }
 
     onBtnMail()
     {
-
+        this.mDlgMail.showDlg(null,this.mData.getMailData());
     }
 
     onBtnInviteCode()
     {
-
+        let self = this ;
+        let code = this.mData.getBindedInviteCode() ;
+        this.mDlgBindInviteCode.showDlg(( newCode : string )=>{
+            self.mData.reqBindInviteCode(newCode,( ret : number , content : string )=>{
+                Prompt.promptText(content);
+                if ( ret == 0 )
+                {
+                    self.mDlgBindInviteCode.closeDlg();
+                }
+            } ) ;
+        },code) ;
     }
 
     onBtnSetting()
     {
+        this.mDlgSetting.showDlg();
+    }
 
+    onBtnInviteFriend()
+    {
+        console.log( "invite friend" );
     }
 
     onBtnRankDetail()
     {
-
+        this.mDlgRank.showDlg(null, this.mData.getRankData() ) ;
     }
 
     onBtnClub()
     {
-
+        cc.director.loadScene(SceneName.Scene_Club) ;
     }
 
     onBtnCreateRoom()
     {
-
+        let data = this.mData ;
+        this.mDlgCreateRoom.showDlg(( opts : IOpts )=>{ 
+            data.reqCreateRoom(opts,( ret : number, roomID : number , content : string )=>{
+                if ( 0 == ret )
+                {
+                    data.reqJoinRoom(roomID) ;
+                }
+                else
+                {
+                    Prompt.promptText( content ) ;
+                }
+            }) ;
+        }) ;
     }
 
     onBtnJoinRoom()
     {
-
+        let self = this ;
+        this.mDlgJoin.showDlg(( roomID : string )=>{
+            if ( roomID.length < 6 )
+            {
+                Prompt.promptText("请输入正确的房间号");
+                return ;
+            }
+            self.mData.reqJoinRoom( parseInt(roomID) ) ;
+        }) ;
     }
 
     onBtnDouDiZhu()
     {
-
+        Prompt.promptText( "暂未开放，敬请期待" );
     }
 
     onBtnExchange()
     {
-
+        let data = this.mData.getShopExchangeData();
+        data.isDefaultExchangePage = true ;
+        this.mDlgExchange.showDlg(null,data ) ;
     }
 
     onBtnActive()
     {
-
+        this.mDlgActive.showDlg() ;
     }
 
     onBtnRecorder()
     {
-
+        this.mDlgRecorder.showDlg(null,this.mData.getRecorderData() ) ;
     }
 
     onBtnRules()
     {
-
+        this.mDlgRules.showDlg();
     }
 
     onBtnBindPhone()
     {
-
+        this.mDlgBindPhone.showDlg(null,this.mData.getDlgBindPhoneData() );
     }
 
     // update (dt) {}

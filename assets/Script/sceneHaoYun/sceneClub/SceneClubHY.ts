@@ -8,6 +8,7 @@ import TestSceneClubHYData from "./TestSceneClubHYData";
 import Prompt from "../../globalModule/Prompt";
 import ClientApp from "../../globalModule/ClientApp";
 import SceneClubDataHY from "./data/SceneClubDataHY";
+import { SceneName } from "../../common/clientDefine";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -271,5 +272,10 @@ export default class SceneClubHY extends cc.Component implements IAbsAdapter, ID
     onBtnNotice()
     {
         this.mDlgNotice.showDlg(null,this.mData.getDlgNoticeData()) ;
+    }
+
+    onBtnBack()
+    {
+        cc.director.loadScene(SceneName.Scene_Main) ;
     }
 }

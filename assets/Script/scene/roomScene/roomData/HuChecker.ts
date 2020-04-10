@@ -178,7 +178,7 @@ export default class HuChecker {
         {
             let v : number[] = [] ;
             v = v.concat(vCards) ;
-            v.splice(idx);
+            v.splice(idx,1);
             let vTing = this.getTingCards(v);
             if ( vTing == null || vTing.length == 0 )
             {

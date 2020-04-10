@@ -20,9 +20,10 @@ let clientEvent =
 
 let SceneName =
 {
-    Scene_Load : "loading",
-    Scene_login : "login",
-    Scene_Main : "main",
+    Scene_Load : "haoYunLoading",
+    Scene_login : "haoYunLogin",
+	Scene_Main : "haoYunMain",
+	Scene_Club : "haoYunClub",
     Scene_Room : "roomNanJing",
     Scene_Replay : "replay",
 }

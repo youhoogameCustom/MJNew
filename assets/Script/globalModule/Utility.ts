@@ -122,6 +122,49 @@ export default class Utility  {
         }
         return (portTypeCrypt %= 100);
     }
+
+    public static requestPhoneVerifyCode( phoneNum : string ) 
+    {
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)) {
+                let response = xhr.responseText;
+                let ret : Object = JSON.parse(response);
+                if ( ret["status"] == "fail")
+                {
+                    Prompt.promptText(ret["message"]);
+                }
+            }
+        };
+        let url = "http://cf2.youhoox.com/?ct=club&ac=send_code&mobile=" + phoneNum ;
+        xhr.open("GET", url, true);
+        xhr.send();
+    }
+
+    public static checkPhoneVerifyCode( phoneNum : string , code : string )
+    {
+        return new Promise(( resolve , reject )=>{
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)) {
+                    let response = xhr.responseText;
+                    console.log(response);
+                    let ret : Object = JSON.parse(response);
+                    if ( ret["status"] != "fail")
+                    {
+                         resolve();
+                    }
+                    else
+                    {
+                        reject();
+                    }
+                }
+            };
+            let url = "http://cf2.youhoox.com/?ct=club&ac=check_code&mobile=" + phoneNum + "&code=" + code;
+            xhr.open("GET", url, true);
+            xhr.send();
+        } );
+    }
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
