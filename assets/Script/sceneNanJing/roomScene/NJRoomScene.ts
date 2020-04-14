@@ -19,7 +19,7 @@ import NJRealTimeSettle from "./roomData/NJRealTimeSettle";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NJRoomScene extends MJRoomScene implements INJRoomDataDelegate {
+export default class NJRoomScene extends MJRoomScene {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad ()
@@ -34,15 +34,6 @@ export default class NJRoomScene extends MJRoomScene implements INJRoomDataDeleg
         ( this.mLayerPlayers as NJLayerPlayers).mScene = this ;
         ( this.mLayerDlg as NJLayerDlg).mRoomData = this.mRoomData ;
     }
-
-    onPlayerRealTimeSettle( settle : NJRealTimeSettle ) : void 
-    {
-        ( this.mLayerPlayers as NJLayerPlayers).onPlayerRealTimeSettle( settle ) ;
-    }
-
-    start () {
-
-    }
-
+    
     // update (dt) {}
 }

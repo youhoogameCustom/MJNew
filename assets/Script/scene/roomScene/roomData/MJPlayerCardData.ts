@@ -43,10 +43,9 @@ export class IPlayerCards
         return this.vBuedHua.length ;
     }
 
-    parseFromMsg( info : Object , playerIdx : number , isSelf : boolean )
+    parseFromMsg( info : Object , playerIdx : number )
     {
         this.clear();
-        this.bIsSelf = isSelf ;
         this.nPlayerIdx = playerIdx ;
         let holdCnt = 0 ;
         if ( info["holdCnt"] != null )
@@ -129,14 +128,15 @@ export class IPlayerCards
        // console.log( "clear cards " );
     }
 
-    onMo( nNewCard : number )
+    onMo( nNewCard : number ) : number
     {
         if ( !this.isSelf() )
         {
-            nNewCard = this.vHoldCard.push( MJCard.makeCardNum(eMJCardType.eCT_Tong,1)) ;
+            nNewCard = MJCard.makeCardNum(eMJCardType.eCT_Tong,1) ;
         }
 
         this.vHoldCard.push(nNewCard);
+        return nNewCard ;
     }
 
     onChu( nChu : number )
@@ -256,6 +256,7 @@ export class IPlayerCards
         this.vMingCards.push(pMing);
 
         this.onMo(newCard);
+        console.log( "after an gang hould cnt =  " + this.vHoldCard.length );
         return pMing ;
     }
 
@@ -379,6 +380,4 @@ export class IPlayerCards
         }
         //this.nHoldCardCnt = cnt ;
     }
-
-
 }

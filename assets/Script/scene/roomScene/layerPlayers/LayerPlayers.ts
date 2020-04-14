@@ -7,6 +7,7 @@ import ILayerPlayers from "../ILayerPlayers";
 import IRoomSceneData, { ILayerPlayersData, IRoomPlayerData } from "../IRoomSceneData";
 import IRoomPlayer from "./IRoomPlayer";
 import RoomPlayer from "./RoomPlayer";
+import RealTimeSettle from "../roomData/RealTimeSettle";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -334,5 +335,13 @@ export default class LayerPlayers extends cc.Component implements ILayerPlayers 
     {
         this.mData.reqSetReady();
     }
-    // update (dt) {}
+
+    onPlayerRealTimeSettle( settle : RealTimeSettle ) : void
+    {
+        for ( let itme of settle.detail )
+        {
+            let playerIdx = this.mData.svrIdxToClientIdx( itme.idx );
+            this.mPlayers[playerIdx].chip = itme.chip ;
+        }
+    }
 }

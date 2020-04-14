@@ -1,4 +1,4 @@
-import IRoomSceneData from "./IRoomSceneData";
+import { eMJActType } from "../roomDefine";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -10,9 +10,20 @@ import IRoomSceneData from "./IRoomSceneData";
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-export default interface IRoomLayer
-{
-    refresh( data : IRoomSceneData ) : void ;
-    onGameStart() : void;
-    onGameEnd();
+export default class RealTimeSettle extends cc.Component {
+
+    actType : eMJActType ;
+    detail : { idx : number , chip : number }[] = [] ;
+    parse( msg : Object )
+    {
+        this.detail.length = 0 ;
+
+        this.actType = msg["actType"] ; 
+        let objs : Object[] = msg["detial"] ; 
+        for ( let item of objs )
+        {
+            let c = { idx : item["idx"] , chip : item["chips"] } ;
+            this.detail.push(c);
+        }
+    }
 }

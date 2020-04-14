@@ -2,6 +2,8 @@ import MJRoomData from "../../roomScene/roomData/MJRoomData";
 import OptsDanDong from "../../../opts/OptsDanDong";
 import MJRoomBaseData from "../../roomScene/roomData/MJRoomBaseData";
 import MJPlayerData from "../../roomScene/roomData/MJPlayerData";
+import ResultSingleData from "../../roomScene/roomData/ResultSingleData";
+import ResultTotalData from "../../roomScene/roomData/ResultTotalData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,8 +22,10 @@ export default class DanDongRoomData extends MJRoomData {
 
     createCompoentData() : void
     {
-        this.mOpts = new OptsDanDong();
+        //this.mOpts = new OptsDanDong();
         this.mBaseData = new MJRoomBaseData();
+        this.mSinglResultData = new ResultSingleData();
+        this.mTotalResultData = new ResultTotalData();
         let icnt = 4 ;
         while ( icnt-- )
         {

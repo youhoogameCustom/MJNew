@@ -27,6 +27,24 @@ enum eOptNodeState
 export default class MJPlayerCardHold extends cc.Component {
 
     posIdx : number = 0 ;
+    _isSelfPlayer : boolean = false ;
+    set isSelfPlayer( is : boolean )
+    {
+        this._isSelfPlayer = is ;
+        if ( is )
+        {
+            this.node.targetOff(this);
+            this.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this) ;
+            this.node.on(cc.Node.EventType.TOUCH_MOVE,this.onTouchMoved,this) ;
+            this.node.on(cc.Node.EventType.TOUCH_END,this.onTouchEnd,this) ;
+            this.node.on(cc.Node.EventType.TOUCH_CANCEL,this.onTouchEnd,this) ;
+        }
+    }
+
+    get isSelfPlayer() : boolean
+    {
+        return this._isSelfPlayer ;
+    }
 
     @property(MJCardFactory2D)
     mFactory : MJCardFactory2D = null ;
@@ -52,13 +70,13 @@ export default class MJPlayerCardHold extends cc.Component {
 
     start () {
         //this.test();
-        if ( this.posIdx == 0 && !this.isReplay )
+        if ( this.isSelfPlayer && !this.isReplay )
         {
-            this.node.targetOff(this);
-            this.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this) ;
-            this.node.on(cc.Node.EventType.TOUCH_MOVE,this.onTouchMoved,this) ;
-            this.node.on(cc.Node.EventType.TOUCH_END,this.onTouchEnd,this) ;
-            this.node.on(cc.Node.EventType.TOUCH_CANCEL,this.onTouchEnd,this) ;
+            // this.node.targetOff(this);
+            // this.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this) ;
+            // this.node.on(cc.Node.EventType.TOUCH_MOVE,this.onTouchMoved,this) ;
+            // this.node.on(cc.Node.EventType.TOUCH_END,this.onTouchEnd,this) ;
+            // this.node.on(cc.Node.EventType.TOUCH_CANCEL,this.onTouchEnd,this) ;
         }
     }
 
@@ -153,7 +171,7 @@ export default class MJPlayerCardHold extends cc.Component {
             }
 
             let card2d = node.getComponent(MJCard2D) ;
-            if ( ( self.posIdx != 0 && self.isReplay == false ) || card2d.mCardNum == card )
+            if ( ( self.isSelfPlayer == false && self.isReplay == false ) || card2d.mCardNum == card )
             {
                 vPos.x = card2d.node.x ;
                 vPos.y = card2d.node.y ;
@@ -245,7 +263,7 @@ export default class MJPlayerCardHold extends cc.Component {
 
     protected layoutHoldCard()
     { 
-        if ( this.isReplay || this.posIdx == 0 )
+        if ( this.isReplay || this.isSelfPlayer )
         {
             this.vHoldCards.sort( ( a : cc.Node , b : cc.Node )=>{
                 return a.getComponent(MJCard2D).mCardNum - b.getComponent(MJCard2D).mCardNum ;

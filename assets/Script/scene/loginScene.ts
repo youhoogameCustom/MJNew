@@ -187,10 +187,10 @@ export default class LoginScene extends IModule {
 
         let vAcc : string[] = [ "new1","new2","new3","new4"] ;
         let vName : string[] =  [ "new1","new2","new3","new4"] ;
-        let vHeadIcon : string[] = [ "http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTL2VH53lyG0F6mKtichN8XU0iacH4T9laIrRicYlMicILK9h78kChjsosmgibD0xD8Q8Toy1wv01JT3MaQ/132"
-                                    ,"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLMAlomibJicN6EfMlerKd5EBn9H6okbqprTp4FZE95yib4QVQ1w3dlqoiahbGmDCe6AspjI7gIxBlmlg/132"
-                                ,"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKOlSlTvqKlqvwzLTdl0kXbF4FwDmxkTkQguvqfia5PNMEs0qPnMg0HTMa96GdmZ2wRUNOUdOoJEicw/132"
-                            ,"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erP6lwtTwOXhKkdeib79icib573XbBJRibISc8CPNibAaEISWkyI3WVGKJASKML9zgb9rYibuicdicTepHStA/132"] ;
+        let vHeadIcon : string[] = [ "http://thirdwx.qlogo.cn/mmopen/vi_32/pXUbUVS4S1eictILicmQtvIVibjv8wjSX0dPLrkaEJyCVQdDXjtgS4Da0VTDDdIibmlXtDQ0VEnWQgX5LdNq54xd0g/132"
+                                    ,"http://basefile.updrips.com/44514b4c1a586f7e_original_1549028412201.jpg"
+                                ,"http://thirdwx.qlogo.cn/mmopen/vi_32/PiajxSqBRaEK1sMwHmLiaLHItiaE1v8VabgXo5cS134YxIcyH8zOBLvG73BeubOF7ibDbSvVelgNB0ZecXbkVr62Qg/132"
+                            ,"https://thirdwx.qlogo.cn/mmopen/vi_32/Q3auHgzwzM48TFibR0AbalhvRzpibeKE3WzAL78fVTeQ7qW3CYYsOQbIGDicaRZokxiatIXzJbFVTdukLprwwIT5Mw/132"] ;
         if ( nIdx >= vAcc.length )
         {
             console.log( "invalid visitor idx = " + nIdx );

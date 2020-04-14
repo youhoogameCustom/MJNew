@@ -57,8 +57,7 @@ export default class PlayerInfoItem extends cc.Component {
             console.error( "must have a default sprite frame" );
             return ;
         }
-
-        this.pDefaultPhoto = this.pPhotoSprite.spriteFrame.clone();
+        //this.pDefaultPhoto = this.pPhotoSprite.spriteFrame.clone();
     }
 
     onDestroy()

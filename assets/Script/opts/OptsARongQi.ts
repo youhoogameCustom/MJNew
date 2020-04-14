@@ -19,7 +19,7 @@ export default class OptsARongQi extends OptsDanDong {
     constructor()
     {
         super();
-        this.gameType = eGameType.eGame_MQMJ ;
+        this.gameType = eGameType.eGame_ARQMJ ;
     }
 
     get isPao() : boolean
@@ -30,5 +30,35 @@ export default class OptsARongQi extends OptsDanDong {
     set isPao( is : boolean )
     {
         this.jsOpts["pao"] = is ? 1 : 0 ;
-    } 
+    }
+    
+    getRuleDesc() : string 
+    {
+        let str = "" ;
+        if ( this.isOnePlayerDianPao )
+        {
+            str = "[一家炮] ";
+        }
+        else
+        {
+            switch ( this.seatCnt )
+            {
+                case 4: str =  "[三家炮]" ;break;
+                case 3: str = "[两家炮]" ;break;
+                case 2: str = "[一家炮]" ;break;
+            }
+            
+        }
+
+        if ( this.isPao )
+        {
+            str = str + " [跑]" ;
+        }
+
+        if ( this.guangFen > 0 )
+        {
+            str = str + " [上限" + this.guangFen + "分]" ;
+        }
+        return "阿荣旗麻将 " + str + ( this.isAvoidCheat ? "[防作弊]" : "" );
+    }
 }

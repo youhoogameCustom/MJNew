@@ -37,13 +37,16 @@ export default class MJPlayerData implements IRoomPlayerData, IPlayerCardData
         {
             this.mPlayerCard = new IPlayerCards();
         }
+
+        this.mPlayerCard.bIsSelf = this.mPlayerBaseData.isSelf ;
+        this.mPlayerCard.nPlayerIdx = this.mPlayerBaseData.svrIdx ;
         
         if ( jsPlayer["holdCnt"] == null && jsPlayer["holdCards"] == null )
         {
             // no card info ;
             return ;
         }
-        this.mPlayerCard.parseFromMsg( jsPlayer,this.mPlayerBaseData.svrIdx,this.mPlayerBaseData.isSelf );
+        this.mPlayerCard.parseFromMsg( jsPlayer,this.mPlayerBaseData.svrIdx);
     }
 
     clear()

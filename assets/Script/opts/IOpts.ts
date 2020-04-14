@@ -31,10 +31,6 @@ export default class IOpts
 
     set seatCnt( cnt : number )
     {
-        if ( CC_JSB == false )
-        {
-            if ( cnt == 3 ) cnt = 2 ;
-        }
         this.jsOpts["seatCnt"] = cnt ;
     }
 

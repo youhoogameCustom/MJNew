@@ -75,7 +75,7 @@ export default class OptsDanDong extends IOpts {
         {
             str = str + " [上限" + this.guangFen + "分]" ;
         }
-        return str ;
+        return "丹东麻将 " + str + ( this.isAvoidCheat ? "[防作弊]" : "" ) ;
     }
 
     getDiamondFee() : number 

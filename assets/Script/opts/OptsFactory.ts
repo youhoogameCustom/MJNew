@@ -2,6 +2,10 @@ import IOpts from "./IOpts";
 import { eGameType } from "../common/clientDefine";
 import OptsSuZhou from "./OptsSuZhou";
 import OptsSuZhouBaiDa from "./OptsSuZhouBaiDa";
+import OptsDanDong from "./OptsDanDong";
+import OptsMoQi from "./OptsMoQi";
+import OptsARongQi from "./OptsARongQi";
+import OptsShiSiLuo from "./OptsShiSiLuo";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,6 +35,26 @@ export default class OptsFactory{
                 opts = new OptsSuZhouBaiDa();
             }
             break ;
+            case eGameType.eGame_DDMJ:
+            {
+                opts = new OptsDanDong();
+            }
+            break ;
+            case eGameType.eGame_MQMJ:
+            {
+                opts = new OptsMoQi();
+            }
+            break ;
+            case eGameType.eGame_ARQMJ:
+            {
+                opts = new OptsARongQi();
+            }
+            break ;
+            case eGameType.eGame_LuoMJ:
+            {
+                opts = new OptsShiSiLuo();
+            }
+            break;
             default:
             {
                 cc.error( "unknonw game type = " + gameType );

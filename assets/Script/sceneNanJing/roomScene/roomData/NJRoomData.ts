@@ -22,9 +22,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class NJRoomData extends MJRoomData {
-
- 
-    mRealTimeSettle : NJRealTimeSettle = new NJRealTimeSettle() ;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -45,17 +42,6 @@ export default class NJRoomData extends MJRoomData {
         {
             this.mPlayers.push( new MJPlayerData() );
         }
-    }
-
-    protected onMsg( nMsgID : eMsgType , msg : Object ) : boolean
-    {
-        if ( nMsgID == eMsgType.MSG_ROOM_FXMJ_REAL_TIME_CELL )
-        {
-            this.mRealTimeSettle.parse(msg);
-            (this.mSceneDelegate as INJRoomDataDelegate).onPlayerRealTimeSettle(this.mRealTimeSettle) ;
-            return true ;
-        }
-        return super.onMsg( nMsgID,msg) ;
     }
     // update (dt) {}
 }

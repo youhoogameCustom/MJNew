@@ -19,6 +19,7 @@ import LayerDlg from "./layerDlg/LayerDlg";
 import LayerRoomInfo from "./layerRoomInfo/LayerRoomInfo";
 import VoiceManager from "../../sdk/VoiceManager";
 import MJCardFactory2D from "./layerCards/cards2D/MJCardFactory2D";
+import RealTimeSettle from "./roomData/RealTimeSettle";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -244,5 +245,10 @@ export default class MJRoomScene extends cc.Component implements IRoomDataDelega
     showDlgPlayerInfo( targetPlayerUID : number )
     {
         this.mLayerDlg.showDlgPlayerInfo( targetPlayerUID ) ;
+    }
+
+    onPlayerRealTimeSettle( settle : RealTimeSettle ) : void 
+    {
+        this.mLayerPlayers.onPlayerRealTimeSettle( settle ) ;
     }
 }

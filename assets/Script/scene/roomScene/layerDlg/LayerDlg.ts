@@ -289,7 +289,7 @@ export default class LayerDlg extends cc.Component implements ILayerDlg {
     {
         if ( isAllBtn )
         {
-            this.mDlgResultTotal.showDlg(null) ;
+            this.mDlgResultTotal.showDlg(null,this.mData.getTotalResultDlgData());
         }
         else
         {
@@ -301,12 +301,11 @@ export default class LayerDlg extends cc.Component implements ILayerDlg {
     showDlgResultTotal() : void 
     {
         this.mDlgResultSingle.setBtn(true);
-        this.mDlgResultTotal.refreshDlg(this.mData.getTotalResultDlgData()) ;
         if ( this.mDlgResultSingle.isDlgShowing() )
         {
             return ;
         }
-        this.mDlgResultTotal.showDlg();
+        this.mDlgResultTotal.showDlg(null,this.mData.getTotalResultDlgData());
     }
 
     // dlg player info 

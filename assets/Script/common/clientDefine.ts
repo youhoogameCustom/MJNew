@@ -24,7 +24,7 @@ let SceneName =
     Scene_login : "haoYunLogin",
 	Scene_Main : "haoYunMain",
 	Scene_Club : "haoYunClub",
-    Scene_Room : "roomNanJing",
+    Scene_Room : "haoYunRoom",
     Scene_Replay : "replay",
 }
 
@@ -80,6 +80,8 @@ export enum eGameType
 	eGame_SDMJ,
 	eGame_YZMJ,
 	eGame_NJMJ,
+	eGame_GuanDan,
+	eGame_ARQMJ,
 	eGame_Max,
 };
 

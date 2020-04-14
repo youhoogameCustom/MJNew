@@ -1,6 +1,7 @@
 import IRoomLayer from "./IRoomLayer";
 import { eChatMsgType } from "./roomDefine";
 import { IRoomPlayerData } from "./IRoomSceneData";
+import RealTimeSettle from "./roomData/RealTimeSettle";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,4 +22,5 @@ export default interface ILayerPlayers extends IRoomLayer {
     onPlayerStandUp( idx : number ) : void ;
     onPlayerReady( idx : number ) : void ;
     onPlayerBuhua( playerIdx : number ) : void ;
+    onPlayerRealTimeSettle( settle : RealTimeSettle ) : void ;
 }

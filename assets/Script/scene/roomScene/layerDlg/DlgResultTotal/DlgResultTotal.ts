@@ -37,11 +37,13 @@ export default class DlgResultTotal extends DlgBase {
 
     // onLoad () {}
 
-    start () {
-
+    showDlg( pfResult? : ( jsResult : Object ) => void, jsUserData? : any, pfOnClose? : ( pTargetDlg : DlgBase ) => void )
+    {
+        super.showDlg( pfResult,jsUserData,pfOnClose ) ;
+        this.refreshDlg(jsUserData ) ;
     }
 
-    refreshDlg( data : ITotalResultDlgData )
+    protected refreshDlg( data : ITotalResultDlgData )
     {
         this.mRoomID.string = "房间号：" + data.roomID ;
         this.mDateTime.string = (new Date()).toLocaleString("zh-CN") ;

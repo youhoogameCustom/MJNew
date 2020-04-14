@@ -63,4 +63,28 @@ export default class OptsShiSiLuo extends IOpts {
         this.jsOpts["hunPiao"] = is ? 1 : 0 ;
     }
 
+    getRuleDesc() : string 
+    {
+        let str = "" ;
+        if ( this.isOnePlayerDianPao )
+        {
+            str = "[一家炮] ";
+        }
+        else
+        {
+            switch ( this.seatCnt )
+            {
+                case 4: str =  "[三家炮]" ;break;
+                case 3: str = "[两家炮]" ;break;
+                case 2: str = "[一家炮]" ;break;
+            }
+            
+        }
+
+        return "十四落麻将 " + str + ( this.isJiaHuShouBaYi ? "[夹胡手把一]" : "" )
+        + ( this.isCaiGang ? "[彩杠]" : "" )
+        + ( this.isHunPiao ? "[混票]" : "" ) 
+        + ( this.isAvoidCheat ? "[防作弊]" : "" )  ;
+    }
+
 }

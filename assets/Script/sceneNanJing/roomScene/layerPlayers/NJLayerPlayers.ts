@@ -34,15 +34,5 @@ export default class NJLayerPlayers extends LayerPlayers {
         let keep = 4;//( this.mRoomData.mOpts as OptsSuZhou ).ruleMode == 1 ? 2 : 3 ;
         (this.mPlayers[playerIdx] as NJRoomPlayer).huaCntColor = cc.Color.GREEN.fromHEX( huaCnt > keep ? "#00f200" : "#c96b82" ) ;
     }
-
-    onPlayerRealTimeSettle( settle : NJRealTimeSettle ) : void 
-    {
-        for ( let itme of settle.detail )
-        {
-            let playerIdx = this.mData.svrIdxToClientIdx( itme.idx );
-            this.mPlayers[playerIdx].chip = itme.chip ;
-        }
-    }
-
     // update (dt) {}
 }

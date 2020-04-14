@@ -44,8 +44,9 @@ export default class ResultTotalData implements ITotalResultDlgData {
         return this.mResults.length > 0 ;
     }
 
-    parseResult( js : Object )
+    parseResult( js : Object , roomData : MJRoomData) : void
     {
+        this.mRoomData = roomData ;
         if ( js["dismissID"] != null )
         {
             this.mApplyDismissID = js["dismissID"] ;

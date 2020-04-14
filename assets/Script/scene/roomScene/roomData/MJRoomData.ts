@@ -14,11 +14,14 @@ import { eMJActType, eChatMsgType, eEatType } from "../roomDefine";
 import GPSManager from "../../../sdk/GPSManager";
 import { PlayerActedCard } from "./MJPlayerCardData";
 import IRoomSceneData, { ILayerPlayersData, IRoomInfoData, IRoomPlayerData } from "../IRoomSceneData";
-import ILayerDlgData, { IDissmissDlgData, ISingleResultDlgData, ITotalResultDlgData, ILocationDlgData } from "../layerDlg/ILayerDlgData";
+import ILayerDlgData, { IDissmissDlgData, ILocationDlgData } from "../layerDlg/ILayerDlgData";
 import ILayerCardsData, { IPlayerCardData } from "../layerCards/ILayerCardsData";
 import ResultTotalData from "./ResultTotalData";
 import ResultSingleData from "./ResultSingleData";
 import { IResultData } from "./IResultData";
+import VoiceManager from "../../../sdk/VoiceManager";
+import OptsFactory from "../../../opts/OptsFactory";
+import RealTimeSettle from "./RealTimeSettle";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,7 +44,7 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
     mSceneDelegate : IRoomDataDelegate = null ; 
     mSinglResultData : IResultData = null ;
     mTotalResultData : IResultData = null;
-
+    mRealTimeSettle : RealTimeSettle = new RealTimeSettle() ;
 
     protected init()
     {
@@ -64,8 +67,7 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
             return ;
         }
 
-        this.mPlayers.length = 0 ;
-        this.mBaseData = null ;
+        //this.mPlayers.length = 0 ;
         
         let msgReqRoomInfo = { } ;
         let port = Utility.getMsgPortByRoomID( nRoomID ) ;
@@ -84,7 +86,7 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
         {
             case eMsgType.MSG_REQUEST_ROOM_INFO:
             {
-                var isOk = msg["ret"] != null && ( msg["ret"] == 0 );
+                let isOk = msg["ret"] != null && ( msg["ret"] == 0 );
                 if ( isOk == false )
                 {
                     Prompt.promptText( "房间已经不存在了！" );
@@ -96,7 +98,8 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
             {
                 //this.mIsNeedCheckGPSAndIP = true ;
                 this.mBaseData.parseInfo(msg) ;
-                this.mOpts.parseOpts(msg["opts"]);
+                this.mOpts = OptsFactory.createOpts(msg["opts"]) ;
+                //this.mOpts.parseOpts(msg["opts"]);
                 this.mSceneDelegate.onRecivedRoomInfo(this.mBaseData);
             }
             break ;
@@ -189,6 +192,12 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
                 this.mBaseData.isRoomOpened = true ;
             }
             break ;
+            case eMsgType.MSG_ROOM_FXMJ_REAL_TIME_CELL:
+            {
+                this.mRealTimeSettle.parse(msg);
+                this.mSceneDelegate.onPlayerRealTimeSettle(this.mRealTimeSettle) ;
+            }
+            break;
             default:
             return this.onMsgPart2(nMsgID,msg);
         } 
@@ -219,6 +228,11 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
             case eMsgType.MSG_PLAYER_WAIT_ACT_ABOUT_OTHER_CARD:
             {
                 this.mBaseData.otherCanActCard = msg["cardNum"];
+                if ( msg["acts"].length == 1 && msg["acts"][0] == eMJActType.eMJAct_Pass )
+                {
+                    break ;
+                }
+
                 this.mSceneDelegate.showActOpts(msg["acts"]);
             }
             break;
@@ -228,6 +242,10 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
                 let vAct : eMJActType[] = [] ;
                 let v : Object[] = msg["acts"] ;
                 v.forEach( n => vAct.push( n["act"] ) );
+                if ( vAct.length == 1 && vAct[0] == eMJActType.eMJAct_Pass )
+                {
+                    break ;
+                }
                 this.mSceneDelegate.showActOpts( vAct ) ;
             }
             break;
@@ -370,7 +388,7 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
         let idx = jsInfo["idx"];
         if ( this.mPlayers[idx] == null )
         {
-            this.mPlayers[idx] = null //new RoomPlayerData();
+            //this.mPlayers[idx] = null //new RoomPlayerData();
             this.mPlayers[idx].clear();
             cc.log("find a null pos idx = " + idx);
         } 
@@ -382,7 +400,6 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
         }
 
         this.mPlayers[idx].parsePlayer(jsInfo,this); 
-        this.mPlayers[idx].mPlayerBaseData.isSelf = ClientApp.getInstance().getClientPlayerData().getSelfUID() == this.mPlayers[idx].mPlayerBaseData.uid ;
         this.mPlayers[idx].mPlayerBaseData.isSitDownBeforSelf = isRealSitDown == false || this.getSelfIdx() == -1;
         if ( isRealSitDown )
         {
@@ -422,9 +439,8 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
         {
             case eMJActType.eMJAct_Mo:
             {
-                roomPlayer.mPlayerCard.onMo(targetCard);
                 this.mBaseData.leftMJCnt -= 1 ;
-                this.mSceneDelegate.onPlayerActMo(svrIdx,targetCard);
+                this.mSceneDelegate.onPlayerActMo(svrIdx,roomPlayer.mPlayerCard.onMo(targetCard) );
             }
             break ;
             case eMJActType.eMJAct_Chu:
@@ -775,7 +791,10 @@ export default abstract class MJRoomData extends IModule implements IRoomInfoDat
 
     doReplayLastVoice( playerUID : number ) : void
     {
-        //VoiceManager.getInstance().replayCacheVoice(playerUID);
+        if ( G_TEST == false && CC_JSB )
+        {
+            VoiceManager.getInstance().playLastVoice(playerUID);
+        }
     }
 
     checkIPandGPS() : boolean

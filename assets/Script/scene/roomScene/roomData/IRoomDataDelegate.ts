@@ -6,6 +6,7 @@ import ResultTotalData from "./ResultTotalData";
 import IResultSingleData from "../../roomSceneSZ/layerDlg/dlgResultSingle/IResultSingleDate";
 import { PlayerActedCard } from "./MJPlayerCardData";
 import { IRoomPlayerData } from "../IRoomSceneData";
+import RealTimeSettle from "./RealTimeSettle";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,6 +36,7 @@ import { IRoomPlayerData } from "../IRoomSceneData";
     showActOpts( vActs : eMJActType[] ) : void ;
     onPlayerActed( idx : number , actedData : PlayerActedCard );
     onMJActError() : void;
+    onPlayerRealTimeSettle( settle : RealTimeSettle ) ;
 
     onGameStart() : void ;
     onGameEnd() : void ; 

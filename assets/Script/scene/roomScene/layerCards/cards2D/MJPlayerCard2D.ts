@@ -74,6 +74,7 @@ export default class MJPlayerCard2D extends cc.Component implements IPlayerMJCar
         this.holdCards.isReplay = this.isReplay ;
         this.chuCards.refresh(cardData.getChus());
         this.mingCards.refresh( cardData.getMings() );
+        this.holdCards.isSelfPlayer = isSelf ;
         this.holdCards.refresh( cardData.getHolds() ) ;
         if ( isSelf && isReplay == false )
         {
@@ -139,7 +140,7 @@ export default class MJPlayerCard2D extends cc.Component implements IPlayerMJCar
                 {
                     if ( v != actedData.nTargetCard )
                     {
-                        this.holdCards.removeCard( actedData.nTargetCard )
+                        this.holdCards.removeCard( v ) ;
                     }
                 }
                 this.mingCards.addMingCards(actedData.vAddtionCards,eMJActType.eMJAct_Chi,actedData.eDir);
