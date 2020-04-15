@@ -256,19 +256,20 @@ export default class ClubDataMembersHY extends ClubDataMembers {
         js["isDetail"] = 1 ;
         let self = this ;
         Network.getInstance().sendMsg(js,eMsgType.MSG_REQUEST_PLAYER_DATA,eMsgPort.ID_MSG_PORT_DATA,uid,( jsmsg : Object )=>{
-            let readUID = jsmsg["uid"] ;
-            if ( readUID == null || readUID != self.mSeachUID )
-            {
-                console.error( "req player data info error uid = " + uid + " not seach id " );
-                return false;
-            }    
-
+            
             if ( jsmsg["ret"] != 0 )
             {
                 pRet( jsmsg["ret"] ,"找不到该玩家，请核对玩家ID") ;
                 return true ;
             }
 
+            let readUID = jsmsg["uid"] ;
+            if ( readUID == null || readUID != self.mSeachUID )
+            {
+                console.error( "req player data info error uid = " + uid + " not seach id " );
+                return false;
+            }    
+            
             self.mSeachResult = new ClubMemberHY() ;
             self.mSeachResult.uid = self.mSeachUID ;
             self.mSeachResult.isInClub = false ;

@@ -93,7 +93,8 @@ export default class ClubDataMembers extends IClubDataComponent implements IClub
 
         let msg = {} ;
         msg["clubID"] = this.clubID ;
-        this.getClub().sendMsg(msg,eMsgType.MSG_CLUB_REQ_PLAYERS,eMsgPort.ID_MSG_PORT_CLUB,this.clubID) ;
+        this.sendClubMsg(eMsgType.MSG_CLUB_REQ_PLAYERS,msg) ;
+        //this.getClub().sendMsg(msg,eMsgType.MSG_CLUB_REQ_PLAYERS,eMsgPort.ID_MSG_PORT_CLUB,this.clubID) ;
         console.log( "featch data clubid = " + this.clubID );
     }
 

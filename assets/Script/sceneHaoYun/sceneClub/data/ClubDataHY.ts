@@ -10,6 +10,7 @@ import ClubDataEventsHY from "./ClubDataEventsHY";
 import ClubDataMembersHY from "./ClubDataMembersHY";
 import { eMsgType } from "../../../common/MessageIdentifer";
 import IClubDataComponent from "../../../clientData/clubData/IClubDataComponent";
+import ClubDataBaseDataHY from "./ClubDataBaseDataHY";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -30,7 +31,7 @@ export default class ClubDataHY extends ClubData implements IDlgMemberDataHY , I
     {
         this._PlayerClubs = clubs ;
         this._ClubID = clubID ;
-        this.vClubDataComponents[eClubDataComponent.eClub_BaseData] = new ClubDataBase();
+        this.vClubDataComponents[eClubDataComponent.eClub_BaseData] = new ClubDataBaseDataHY();
         this.vClubDataComponents[eClubDataComponent.eClub_Events] = new ClubDataEventsHY();
         this.vClubDataComponents[eClubDataComponent.eClub_Members] = new ClubDataMembersHY();
         this.vClubDataComponents[eClubDataComponent.eClub_Recorders] = new ClubDataRecorderHY();
@@ -41,9 +42,8 @@ export default class ClubDataHY extends ClubData implements IDlgMemberDataHY , I
             this.vClubDataComponents[type].init(this,type) ;
         }
         
-        this.vClubDataComponents[eClubDataComponent.eClub_BaseData].fetchData(false);
-        this.vClubDataComponents[eClubDataComponent.eClub_Events].fetchData(false);
-        this.vClubDataComponents[eClubDataComponent.eClub_Rooms].fetchData(false);
+        //this.vClubDataComponents[eClubDataComponent.eClub_BaseData].fetchData(false);
+        //this.vClubDataComponents[eClubDataComponent.eClub_Rooms].fetchData(false);
     }
     
     onDataRefreshed( data : IClubDataComponent )
@@ -55,6 +55,11 @@ export default class ClubDataHY extends ClubData implements IDlgMemberDataHY , I
             {
                 this.pCallBackMeberDataRefresh(); 
             }
+        }
+
+        if ( eClubDataComponent.eClub_BaseData == data.getType() )
+        {
+            //this.vClubDataComponents[eClubDataComponent.eClub_Events].fetchData(false);
         }
     }
 

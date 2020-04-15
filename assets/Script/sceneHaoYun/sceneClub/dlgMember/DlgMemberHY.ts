@@ -90,13 +90,14 @@ export default class DlgMemberHY extends DlgBase implements IAbsAdapter {
 
         this.mData = jsUserData ;
 
-        for ( let v of this.mPages )
-        {
-            v.setAdapter(this);
-        }
-
         let self = this ;
-        this.mData.reqMembersDatas(()=>{ self.refreshPage(); });
+        this.mData.reqMembersDatas(()=>{ 
+            for ( let v of self.mPages )
+            {
+                v.setAdapter(self);
+            }
+            self.refreshPage();
+         });
         
     }
     // update (dt) {}
@@ -310,7 +311,7 @@ export default class DlgMemberHY extends DlgBase implements IAbsAdapter {
             }
             return ;
         }
-        let numID = parseInt(this.mSeachContent.string ) ; 
+        let numID = parseInt( this.mSeachContent.string.length < 2 ? "0" : this.mSeachContent.string ) ; 
         if ( numID < 10000 )
         {
             if ( G_TEST == false )

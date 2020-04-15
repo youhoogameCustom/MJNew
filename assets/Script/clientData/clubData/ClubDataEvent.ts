@@ -271,7 +271,7 @@ export default class ClubDataEvent extends IClubDataComponent implements IClubMe
                  }
              } );
 
-             if ( vEvents.length < 10 && vEvents.length > 0 )
+             if ( vEvents.length < 10 && vEvents.length >= 0 )
              {
                  // check we do not want cache too many logs ;
                  if ( this.vEventLog.length > 50 )

@@ -3,8 +3,6 @@ import LayerPlayerCards from "../../scene/roomScene/layerCards/LayerPlayerCards"
 import NJLayerPlayers from "./layerPlayers/NJLayerPlayers";
 import NJLayerDlg from "./layerDlg/NJLayerDlg";
 import NJLayerRoomInfo from "./layerRoomInfo/NJLayerRoomInfo";
-import INJRoomDataDelegate from "./roomData/INJRoomDataDelegate";
-import NJRealTimeSettle from "./roomData/NJRealTimeSettle";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -34,6 +32,6 @@ export default class NJRoomScene extends MJRoomScene {
         ( this.mLayerPlayers as NJLayerPlayers).mScene = this ;
         ( this.mLayerDlg as NJLayerDlg).mRoomData = this.mRoomData ;
     }
-    
+
     // update (dt) {}
 }

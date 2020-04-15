@@ -20,6 +20,8 @@ const {ccclass, property} = cc._decorator;
 export default class ClubDataBaseDataHY extends ClubDataBase implements IControlCenterDataHY {
 
     ///----IControlCenterDataHY
+    pResultCallBackAddWanFa :  ( ret : number , content : string )=>void = null ;
+
     get clubName() : string
     {
         return this.name ;
@@ -38,7 +40,13 @@ export default class ClubDataBaseDataHY extends ClubDataBase implements IControl
     getWanFaList() : { idx : number , content : string }[] 
     {
         let v :  { idx : number , content : string } [] = [] ;
-        let opss = this._dataJs["optsInfo"] ;
+        let opss = this._dataJs["opts"]["optsInfo"] ;
+        if ( opss == null )
+        {
+            opss = [] ;
+            opss.push({ optsIdx : 0 , optsValue : this._dataJs["opts"] });
+        }
+
         for ( let item of opss )
         {
             let idx = item["optsIdx"] ;
@@ -60,6 +68,8 @@ export default class ClubDataBaseDataHY extends ClubDataBase implements IControl
             if ( ret == 0 )
             {
                 self.fetchData(true);
+                self.pResultCallBackAddWanFa = pRet ;
+                return true ;
             }
 
             let verror = [ "添加成功" , "权限不足","玩法数量超过限制","重复玩法","无效玩家对象"] ;
@@ -161,6 +171,20 @@ export default class ClubDataBaseDataHY extends ClubDataBase implements IControl
             pRet(ret,info) ;
             return true ;
         } );
+    }
+
+    onMsg( msgID : number , msgData : Object ) : boolean
+    {
+        let ret = super.onMsg(msgID,msgData) ;
+        if ( ret && msgID == eMsgType.MSG_CLUB_REQ_INFO )
+        {
+             if ( this.pResultCallBackAddWanFa != null )
+             {
+                 this.pResultCallBackAddWanFa(0,"添加成功");
+                 this.pResultCallBackAddWanFa = null ;
+             }
+        }
+        return ret ;
     }
 
     reqDismiss() : void 

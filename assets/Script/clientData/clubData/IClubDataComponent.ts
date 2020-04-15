@@ -37,21 +37,22 @@ export default abstract class IClubDataComponent  {
         return this.getClub().getClubID();
     }
 
-    abstract fetchData( isforce : boolean ) : void ;
+    abstract fetchData( isforce : boolean ) : void;
     
     doInformDataRefreshed( isResetInterval : boolean )
     {
-        this.getClub().onDataRefreshed(this);
-
         if ( isResetInterval )
         {
             this.nLastFetchDataTime = Date.now();
         }
+        this.getClub().onDataRefreshed(this);
     }
 
     isDataOutOfDate() : boolean  // by seconds 
     {
-        return (Date.now() - this.nLastFetchDataTime ) > 1000 * 15 ; // 15 seconds , refresh rate
+        let interval = (Date.now() - this.nLastFetchDataTime ) ;
+        console.log( "isDataOutOfDate = " + interval );
+        return interval > 1000 * 150 ; // 15 seconds , refresh rate
     }
 
     onMsg( msgID : number , msgData : Object ) : boolean 

@@ -2,9 +2,6 @@ import MJRoomData from "../../../scene/roomScene/roomData/MJRoomData";
 import OptsNanJing from "../../../opts/OptsNanJing";
 import MJRoomBaseData from "../../../scene/roomScene/roomData/MJRoomBaseData";
 import MJPlayerData from "../../../scene/roomScene/roomData/MJPlayerData";
-import { eMsgType } from "../../../common/MessageIdentifer";
-import NJRealTimeSettle from "./NJRealTimeSettle";
-import INJRoomDataDelegate from "./INJRoomDataDelegate";
 import NJResultTotalData from "./NJResultTotalData";
 import NJResultSingleData from "./NJResultSingleData";
 

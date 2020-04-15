@@ -1,7 +1,5 @@
 import LayerPlayers from "../../../scene/roomScene/layerPlayers/LayerPlayers";
 import NJRoomPlayer from "./NJRoomPlayer";
-import NJRealTimeSettle from "../roomData/NJRealTimeSettle";
-import DlgShopItem from "../../../scene/mainScene/shop/dlgShopItem";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html

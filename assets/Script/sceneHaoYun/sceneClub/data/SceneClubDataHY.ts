@@ -36,6 +36,12 @@ export default class SceneClubDataHY extends ClientPlayerClubs implements IScene
     {
         this.pCallBackRefreshClubs = pRet ;
         let vCIDs = ClientApp.getInstance().getClientPlayerData().getBaseData().getJoinedClubsID();
+        if ( this.vClubs.length == 0 )
+        {
+            this.pCallBackRefreshClubs();
+            return ;
+        }
+
         let vClubs : ClubData[] = [] ;
         for ( let v of vCIDs )
         {
@@ -53,13 +59,22 @@ export default class SceneClubDataHY extends ClientPlayerClubs implements IScene
         for ( let club of this.vClubs )
         {
             club.fetchData(eClubDataComponent.eClub_BaseData,false) ;
-            club.fetchData(eClubDataComponent.eClub_Events,false) ;
             club.fetchData(eClubDataComponent.eClub_Rooms,false ) ;
+        }
+
+        if ( this.mCurClub == null && this.vClubs.length > 0 )
+        {
+            this.mCurClub = this.vClubs[0] ;
         }
     }
 
-    onClubDataRefreshed( club : ClubData, refreshedCompoent : IClubDataComponent )
+    onClubDataRefreshed( club1 : ClubData, refreshedCompoent : IClubDataComponent )
     {
+        if ( refreshedCompoent.getType() == eClubDataComponent.eClub_BaseData )
+        {
+            club1.fetchData(eClubDataComponent.eClub_Events,true) ;
+        }
+
         for ( let club of this.vClubs )
         {
             if ( club.getClubBase().isDataOutOfDate() )
