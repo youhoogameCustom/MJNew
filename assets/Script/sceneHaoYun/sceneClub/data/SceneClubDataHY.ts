@@ -4,7 +4,6 @@ import ClubDataRoomsHY from "./ClubDataRoomsHY";
 import IDlgMemberDataHY from "../dlgMember/IDlgMemberDataHY";
 import ClubDataHY from "./ClubDataHY";
 import IDlgRecorderDataHY from "../dlgRecorder/IDlgRecorderDataHY";
-import Prompt from "../../../globalModule/Prompt";
 import ClubDataRecorderHY from "./ClubDataRecorderHY";
 import ClubDataBaseDataHY from "./ClubDataBaseDataHY";
 import ClubData from "../../../clientData/clubData/ClubData";
@@ -56,47 +55,28 @@ export default class SceneClubDataHY extends ClientPlayerClubs implements IScene
         this.vClubs.length = 0 ;
         this.vClubs = vClubs ;
 
+        let vPromise = [] ;
         for ( let club of this.vClubs )
         {
-            club.fetchData(eClubDataComponent.eClub_BaseData,false) ;
-            club.fetchData(eClubDataComponent.eClub_Rooms,false ) ;
+            let p = new Promise(( reslove )=>{
+                club.asyncFetchData(eClubDataComponent.eClub_BaseData,false).then( ()=>{
+                   return club.asyncFetchData(eClubDataComponent.eClub_Events,false);
+                } ).then(()=>{ reslove();} );
+            });
+
+            let p2 = club.asyncFetchData(eClubDataComponent.eClub_Rooms,false) ;
+            vPromise.push( Promise.all([p,p2]) ) ;
+        }
+
+        if ( vPromise.length > 0 )
+        {
+            let self = this ;
+            Promise.all(vPromise).then(()=>{self.pCallBackRefreshClubs()}) ;
         }
 
         if ( this.mCurClub == null && this.vClubs.length > 0 )
         {
             this.mCurClub = this.vClubs[0] ;
-        }
-    }
-
-    onClubDataRefreshed( club1 : ClubData, refreshedCompoent : IClubDataComponent )
-    {
-        if ( refreshedCompoent.getType() == eClubDataComponent.eClub_BaseData )
-        {
-            club1.fetchData(eClubDataComponent.eClub_Events,true) ;
-        }
-
-        for ( let club of this.vClubs )
-        {
-            if ( club.getClubBase().isDataOutOfDate() )
-            {
-                return ;
-            }
-
-            if ( club.getClubRooms().isDataOutOfDate() )
-            {
-                return ;
-            }
-
-            
-            if ( club.getClubEvents().isDataOutOfDate() )
-            {
-                return ;
-            }
-        }
-
-        if ( this.pCallBackRefreshClubs != null )
-        {
-            this.pCallBackRefreshClubs();
         }
     }
 

@@ -254,7 +254,7 @@
     <orderEntry type="library" name="Gradle: __local_aars__:C.\CocosCreator_2.2.0\resources\cocos2d-x\cocos\platform\android\java\libs\okhttp-3.12.3.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: __local_aars__:C.\CocosCreator_2.2.0\resources\cocos2d-x\cocos\platform\android\java\libs\okio-1.15.0.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.4.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.amap.api:location:4.7.2@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.amap.api:location:4.9.0@jar" level="project" />
     <orderEntry type="module" module-name="libcocos2dx" />
   </component>
 </module>

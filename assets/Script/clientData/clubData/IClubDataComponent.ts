@@ -17,7 +17,7 @@ export default abstract class IClubDataComponent  {
     private nLastFetchDataTime : number = 0 ;
     private _ClubData : ClubData = null ;
     private _type : number = 0 ;
-
+    protected _fetchDataPromiseResolve : ()=>void = null ;
     getClub() : ClubData { return this._ClubData ;}
 
     init( clubData : ClubData, type : number )
@@ -38,6 +38,7 @@ export default abstract class IClubDataComponent  {
     }
 
     abstract fetchData( isforce : boolean ) : void;
+    abstract asyncFetchData( isforce : boolean ) : Promise<any>;
     
     doInformDataRefreshed( isResetInterval : boolean )
     {
@@ -45,6 +46,13 @@ export default abstract class IClubDataComponent  {
         {
             this.nLastFetchDataTime = Date.now();
         }
+
+        if ( this._fetchDataPromiseResolve != null )
+        {
+            this._fetchDataPromiseResolve();
+            this._fetchDataPromiseResolve = null ;
+        }
+
         this.getClub().onDataRefreshed(this);
     }
 

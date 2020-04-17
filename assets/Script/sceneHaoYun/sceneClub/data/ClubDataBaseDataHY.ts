@@ -20,8 +20,6 @@ const {ccclass, property} = cc._decorator;
 export default class ClubDataBaseDataHY extends ClubDataBase implements IControlCenterDataHY {
 
     ///----IControlCenterDataHY
-    pResultCallBackAddWanFa :  ( ret : number , content : string )=>void = null ;
-
     get clubName() : string
     {
         return this.name ;
@@ -67,8 +65,7 @@ export default class ClubDataBaseDataHY extends ClubDataBase implements IControl
             let ret : number = js["ret"] ;
             if ( ret == 0 )
             {
-                self.fetchData(true);
-                self.pResultCallBackAddWanFa = pRet ;
+                self.asyncFetchData(true).then(()=>{ pRet(0,"添加成功"); } );
                 return true ;
             }
 
@@ -171,20 +168,6 @@ export default class ClubDataBaseDataHY extends ClubDataBase implements IControl
             pRet(ret,info) ;
             return true ;
         } );
-    }
-
-    onMsg( msgID : number , msgData : Object ) : boolean
-    {
-        let ret = super.onMsg(msgID,msgData) ;
-        if ( ret && msgID == eMsgType.MSG_CLUB_REQ_INFO )
-        {
-             if ( this.pResultCallBackAddWanFa != null )
-             {
-                 this.pResultCallBackAddWanFa(0,"添加成功");
-                 this.pResultCallBackAddWanFa = null ;
-             }
-        }
-        return ret ;
     }
 
     reqDismiss() : void 

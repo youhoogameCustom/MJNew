@@ -172,6 +172,7 @@ export default class ClubDataEvent extends IClubDataComponent implements IClubMe
     {
         if ( this.getClub().isSelfPlayerMgr() == false )
         {
+            this.doInformDataRefreshed( false );
             return ;
         }
         
@@ -190,6 +191,38 @@ export default class ClubDataEvent extends IClubDataComponent implements IClubMe
         msg["clientMaxEventID"] = 0 ;  // do not cache wait process event ;
         msg["state"] = eEventState.eEventState_WaitProcesse ;  // not process event ;
         this.sendClubMsg(eMsgType.MSG_CLUB_REQ_EVENTS,msg) ;
+        return ;
+    }
+
+    asyncFetchData( isforce : boolean ) : Promise<any>
+    {
+        let self = this ;
+        let pPro = new Promise(( resolve , reject )=>{
+            self._fetchDataPromiseResolve = resolve ;
+        }) ;
+
+        if ( this.getClub().isSelfPlayerMgr() == false )
+        {
+            this.doInformDataRefreshed( false );
+            return pPro;
+        }
+        
+        if ( false == isforce && false == this.isDataOutOfDate() )
+        {
+            this.doInformDataRefreshed( false );
+            return pPro;
+        }
+
+        let msg = {} ;
+        msg["clubID"] = this.clubID;
+        msg["clientMaxEventID"] = this.nClientMaxEventID ;
+        msg["state"] = eEventState.eEventState_Processed ; 
+        this.sendClubMsg(eMsgType.MSG_CLUB_REQ_EVENTS,msg ) ;
+
+        msg["clientMaxEventID"] = 0 ;  // do not cache wait process event ;
+        msg["state"] = eEventState.eEventState_WaitProcesse ;  // not process event ;
+        this.sendClubMsg(eMsgType.MSG_CLUB_REQ_EVENTS,msg) ;
+        return pPro ;
     }
 
     onMsg( msgID : number , msgData : Object ) : boolean

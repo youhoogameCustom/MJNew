@@ -34,6 +34,28 @@ export default class ClubDataRecorder extends IClubDataComponent implements IClu
         this.vRecorder.fetchData( ( data : RecorderData )=>{ self.doInformDataRefreshed(true) ;} );
     } 
 
+    asyncFetchData( isforce : boolean ) : Promise<any>
+    {
+        let self = this ;
+        let pPro = new Promise(( resolve , reject )=>{
+            self._fetchDataPromiseResolve = resolve ;
+        }) ;
+
+        if ( isforce == false && false == this.isDataOutOfDate() )
+        {
+            this.doInformDataRefreshed(false);
+            return pPro;
+        }
+        
+        if ( this.vRecorder == null )
+        {
+            this.vRecorder = new RecorderData() ;
+            this.vRecorder.init(this.clubID,true) ;
+        }
+        this.vRecorder.fetchData( ( data : RecorderData )=>{ self.doInformDataRefreshed(true) ;} );
+        return pPro;
+    }
+
     // interface IClubRecorderData
     getRecorderItems() : IRecorderRoom[] 
     {

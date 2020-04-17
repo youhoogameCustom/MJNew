@@ -22,17 +22,37 @@ export default class ClubDataBase extends IClubDataComponent implements IClubCon
     _dataJs : Object = null ;
     _Opts : IOpts = null ;
 
-    fetchData( isForce : boolean )
+    fetchData( isForce : boolean ) : void
     {
         if ( isForce == false && this.isDataOutOfDate() == false )
         {
-            this.getClub().onDataRefreshed(this) ;
+            this.doInformDataRefreshed( false );
             return ;
         }
 
         let js = { } ;
         js["clubID"] = this.getClub().getClubID();
         this.sendClubMsg( eMsgType.MSG_CLUB_REQ_INFO,js ) ;
+        return ;
+    }
+
+    asyncFetchData( isForce : boolean ) : Promise<any>
+    {
+        let self = this ;
+        let pPro = new Promise(( resolve , reject )=>{
+            self._fetchDataPromiseResolve = resolve ;
+        }) ;
+
+        if ( isForce == false && this.isDataOutOfDate() == false )
+        {
+            this.doInformDataRefreshed( false );
+            return pPro;
+        }
+
+        let js = { } ;
+        js["clubID"] = this.getClub().getClubID();
+        this.sendClubMsg( eMsgType.MSG_CLUB_REQ_INFO,js ) ;
+        return pPro;
     }
 
     onMsg( msgID : number , msgData : Object ) : boolean

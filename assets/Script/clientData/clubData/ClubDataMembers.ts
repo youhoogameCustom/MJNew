@@ -88,7 +88,7 @@ export default class ClubDataMembers extends IClubDataComponent implements IClub
         if ( false == isforce && false == this.isDataOutOfDate() )
         {
             this.doInformDataRefreshed(false);
-            return ;
+            return;
         } 
 
         let msg = {} ;
@@ -96,6 +96,28 @@ export default class ClubDataMembers extends IClubDataComponent implements IClub
         this.sendClubMsg(eMsgType.MSG_CLUB_REQ_PLAYERS,msg) ;
         //this.getClub().sendMsg(msg,eMsgType.MSG_CLUB_REQ_PLAYERS,eMsgPort.ID_MSG_PORT_CLUB,this.clubID) ;
         console.log( "featch data clubid = " + this.clubID );
+        return;
+    }
+
+    asyncFetchData( isforce : boolean ) : Promise<any>
+    {
+        let self = this ;
+        let pPro = new Promise(( resolve , reject )=>{
+            self._fetchDataPromiseResolve = resolve ;
+        }) ;
+
+        if ( false == isforce && false == this.isDataOutOfDate() )
+        {
+            this.doInformDataRefreshed(false);
+            return pPro;
+        } 
+
+        let msg = {} ;
+        msg["clubID"] = this.clubID ;
+        this.sendClubMsg(eMsgType.MSG_CLUB_REQ_PLAYERS,msg) ;
+        //this.getClub().sendMsg(msg,eMsgType.MSG_CLUB_REQ_PLAYERS,eMsgPort.ID_MSG_PORT_CLUB,this.clubID) ;
+        console.log( "featch data clubid = " + this.clubID );
+        return pPro ;
     }
 
     onMsg( msgID : number , msgData : Object ) : boolean

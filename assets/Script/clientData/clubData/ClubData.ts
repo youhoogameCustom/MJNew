@@ -61,6 +61,17 @@ export default class ClubData implements IClubListDataItem {
         p.fetchData( isForce ) ;
     }
 
+    asyncFetchData( type : eClubDataComponent , isForce : boolean ) : Promise<any>
+    {
+        let p = this.vClubDataComponents[type] ;
+        if ( p == null )
+        {
+            console.error( "fetch data component is null , type = " + type );
+            return Promise.resolve();
+        }
+        return p.asyncFetchData( isForce ) ;
+    }
+
     getClubID() : number 
     {
         return this._ClubID ;

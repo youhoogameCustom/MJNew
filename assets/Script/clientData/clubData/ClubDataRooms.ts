@@ -68,6 +68,26 @@ export default class ClubDataRooms extends IClubDataComponent implements IClubRo
         this.getClub().sendMsg(js,eMsgType.MSG_CLUB_REQ_ROOMS,eMsgPort.ID_MSG_PORT_CLUB,this.clubID ) ;
     }
 
+    asyncFetchData( isforce : boolean ) : Promise<any>
+    {
+        let self = this ;
+        let pPro = new Promise(( resolve , reject )=>{
+            self._fetchDataPromiseResolve = resolve ;
+        }) ;
+
+        if ( false == isforce && this.isDataOutOfDate() == false )
+        {
+            this.doInformDataRefreshed(false) ;
+            return pPro;
+        }
+
+        console.log( "req clubl rooms clubID = " + this.clubID );
+        let js = {} ;
+        js["clubID"] = this.clubID ;
+        this.sendClubMsg(eMsgType.MSG_CLUB_REQ_ROOMS,js) ;
+        return pPro ;
+    }
+
     onMsg( msgID : number , msgData : Object ) : boolean 
     {
         if ( eMsgType.MSG_CLUB_REQ_ROOMS == msgID )
