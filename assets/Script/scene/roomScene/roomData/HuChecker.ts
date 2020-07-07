@@ -11,7 +11,7 @@ import { eMJCardType } from "../roomDefine";
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+//onst {ccclass, property} = cc._decorator;
 
 class Group
 {
@@ -167,7 +167,7 @@ class Group
 
 }
 
-@ccclass
+//@ccclass
 export default class HuChecker {
 
     checkTing( vCards : number[] ) : { chu : number, tingCards : number[]} [] 
